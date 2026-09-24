@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-ijas-navy: #0c3c7d;
+  --color-ijas-blue: #1a4fa0;
+  --color-ijas-blue-bright: #1a5aba;
+  --color-ijas-light: #8eb8e8;
+  --color-ijas-ink: #1f2937;
+  --color-ijas-wash: #f8f8f8;
+  --animate-scroll: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
+
+  @keyframes scroll {
+    to {
+      transform: translate(calc(-50% - 0.5rem));
+    }
+  }
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-width: 320px;
+  background: #ffffff;
+  color: var(--color-ijas-ink);
+  font-family: var(--font-sans);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-scroll {
+    animation: none !important;
+  }
+}
