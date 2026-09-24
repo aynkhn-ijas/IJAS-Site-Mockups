@@ -1,6 +1,6 @@
 # IJAS Homepage Mock
 
-Unofficial visual clone of the [Illinois Junior Academy of Science](https://www.ijas.org/) homepage only. Not affiliated with IJAS. No login, zFairs, or extra pages.
+Unofficial visual clone of the [Illinois Junior Academy of Science](https://www.ijas.org/) homepage only. No login, zFairs, or extra pages.
 
 ## Run
 
