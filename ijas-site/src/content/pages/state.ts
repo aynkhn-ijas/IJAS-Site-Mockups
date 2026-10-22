@@ -74,7 +74,7 @@ Student Center
 Paper Session\\
 TBD`,
         // Save the photo as public/images/awards-trophies.jpg
-        `![Award trophies on a table](/images/awards-trophies.jpg)`,
+        `![Award trophies on a table](/images/awards-trophies.png)`,
         `## Awards Ceremony
 
 Renaissance Center\\

@@ -11,6 +11,7 @@ import { rules } from "./rules";
 import { officeHours } from "./office-hours";
 import { regionalExpositions } from "./regional-expositions";
 import { state } from "./state";
+import { contests } from "./contests";
 
 export const pages: Record<string, Page> = {
   [isef.slug]: isef,
@@ -25,4 +26,5 @@ export const pages: Record<string, Page> = {
   [officeHours.slug]: officeHours,
   [regionalExpositions.slug]: regionalExpositions,
   [state.slug]: state,
+  [contests.slug]: contests,
 };
