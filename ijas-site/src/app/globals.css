@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  --font-sans: var(--font-sans-loaded), ui-sans-serif, system-ui, sans-serif;
+
+  /* Official palette */
+  --color-ijas-navy: #0b3c7d;
+  --color-ijas-light: #75a8ed;
+  --color-ijas-gray: #e6e6e6;
+  --color-ijas-green: #417b5a;
+  --color-ijas-red: #841619;
+
+  /* From the mockup, not in the official palette, so check against the live site */
+  --color-ijas-blue: #1a4fa0;
+  --color-ijas-blue-bright: #1a5aba;
+  --color-ijas-ink: #1f2937;
+  --color-ijas-wash: #f8f8f8;
+
+  --animate-scroll: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
+  @keyframes scroll {
+    to { transform: translate(calc(-50% - 0.5rem)); }
+  }
+}
+
+html, body {
+  margin: 0;
+  min-width: 320px;
+  background: #fff;
+  color: var(--color-ijas-ink);
+  font-family: var(--font-sans);
+}
+body { overflow-x: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .animate-scroll { animation: none !important; }
+}
