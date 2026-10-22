@@ -1,6 +1,6 @@
-# IJAS Homepage Mock
+# Illinois Junior Academy of Science
 
-Unofficial visual clone of the [Illinois Junior Academy of Science](https://www.ijas.org/) homepage only. Not affiliated with IJAS. No login, zFairs, or extra pages.
+Vite + React recreation of the IJAS website with React Router, plus a 2025/2026 State Exposition Awards archive.
 
 ## Run
 
@@ -9,20 +9,15 @@ npm install
 npm run dev
 ```
 
-Then open the URL Vite prints (typically `http://127.0.0.1:5175/`).
+Open the URL Vite prints, usually `http://127.0.0.1:5176/`.
 
 ```bash
-npm run build     # production build
-npm run preview   # preview the production build
+npm run build
+npm run preview
 ```
 
-## Stack
+Primary routes include `/`, `/about`, `/students`, `/teachers`, `/judges`, `/awards`, `/membership`, `/rules`, `/regionals`, and `/contact`.
 
-- Vite + React + TypeScript + Tailwind CSS v4
-- [Aceternity UI](https://ui.aceternity.com/) **3D Card** (audience tiles) and **Infinite Moving Cards** (sponsor strip, `direction="left"`, `speed="slow"`)
-- [React Bits](https://reactbits.dev) **Counter** (JS + CSS, `motion/react`) for 600+ / 1200 / 2300+
-- `motion` for nav underlines, dropdowns, and card tilt
+## Awards archive
 
-## Notes
-
-Nav links are placeholders (`#`). This folder is a clean copy without `node_modules` or `dist`, ready for `git init` / push.
+`/awards` defaults to 2026. Year tabs load 2025 or 2026. The page lists EPIC awards, special/sponsored awards, and Gold winners. Silver, bronze, participation, and no-show entries appear only when they also received a special or EPIC honor. Award records stay in `src/data/` and are not copied into this README.

@@ -1,0 +1,46 @@
+export const boardSections = [
+  {
+    heading: "EXECUTIVE BOARD",
+    rows: [
+      ["Brian", "Lewandowski", "2028", "President", "brian.lewandowski@ijas.org"],
+      ["Emily", "Dawson", "2028", "Past President", "emily.dawson@ijas.org"],
+      ["Ryan", "Friel", "2028", "President Elect", "ryan.friel@ijas.org"],
+      ["Elizabeth", "Dorgan-Spector", "2027", "Treasurer", "elizabeth.dorgan-spector@ijas.org"],
+      ["Rachel", "Kurtz", "2027", "Secretary", "rachel.kurtz@ijas.org"],
+    ],
+  },
+  {
+    heading: "BOARD MEMBERS",
+    rows: [
+      ["Joy", "Lewandowski", "2027", "Board Member at Large", "joy.lewandowski@ijas.org"],
+      ["John", "Bobek", "2028", "Board Member at Large", "john.bobek@ijas.org"],
+      ["Sue Ellen", "Gerchman", "2029", "Board Member at Large", "sueellen.gerchman@ijas.org"],
+      ["Tammie", "Mesenbring", "2030", "Board Member at Large", "tammie.mesenbring@ijas.org"],
+      ["Vina", "Castelli", "2027", "Regional Representative", "vina.castelli@ijas.org"],
+      ["Sue Ellen", "Gerchman", "2027", "Regional Representative", "sueellen.gerchman@ijas.org"],
+      ["Agrini", "Neekhra", "2026", "Student President", "info@ijas.org"],
+      ["Amritha", "Praveen", "2026", "Student Vice President", "info@ijas.org"],
+      ["Emily", "Dawson", "", "Business, Industry, and Professional Partnerships Coordinator", "emily.dawson@ijas.org"],
+      ["Amy", "Boucek", "", "Paper Session Coordinator", "amy.boucek@ijas.org"],
+      ["Ryan", "Friel", "", "Project Session Coordinator", "ryan.friel@ijas.org"],
+      ["Emily", "Dawson", "", "Membership Chair", "emily.dawson@ijas.org"],
+      ["Christina", "Palffy", "", "Safety Chair & IJAS Scientific Review Committee (SRC) Chair", "christina.palffy@ijas.org"],
+      ["Amy", "Boucek", "", "ISEF Scientific Review Committee (SRC) Chair", "amy.boucek@ijas.org"],
+      ["Jen", "Jost", "", "Illinois State Academy of Science Representative", "jost@email.bradley.edu"],
+      ["Laura", "Corey", "", "Illinois State Academy of Science Representative", "laura.corey@eiu.edu"],
+    ],
+  },
+  {
+    heading: "ADDITIONAL CORPORATE OFFICERS (Non-voting)",
+    rows: [
+      ["Jann", "Hawkins", "", "Student Advisor", "jann.hawkins@ijas.org"],
+      ["Delisha", "Nair", "", "Assistant Student Advisor", "delisha.nair@ijas.org"],
+      ["Vibha", "Srikant", "", "Assistant Business, Industry, and Professional Partnerships Coordinator", "vibha.srikant@ijas.org"],
+      ["Sue Ellen", "Gerchman", "", "Assistant Safety Chairperson", "sueellen.gerchman@ijas.org"],
+      ["Tammie", "Mesenbring", "", "Merchandise Chairperson", "tammie.mesenbring@ijas.org"],
+      ["John", "Bobek", "", "Historian", "john.bobek@ijas.org"],
+      ["Emily", "Yovich", "", "Special Event Chairperson/Special Luncheon", "eyovich@hscschool.org"],
+      ["Sue Ellen", "Gerchman", "", "Exceptional Project in Category (EPIC) Coordinator", "sueellen.gerchman@ijas.org"],
+    ],
+  },
+];

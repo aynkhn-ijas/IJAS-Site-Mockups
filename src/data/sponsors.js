@@ -1,0 +1,137 @@
+const s = (file, name, href) => ({
+  src: `${import.meta.env.BASE_URL}sponsors/${file}`,
+  name,
+  href: href || null,
+});
+
+export const sponsorGroups = [
+  {
+    title: "University Hosts",
+    logos: [
+      s("illinois-university.avif", "University of Illinois Urbana-Champaign", "https://illinois.edu"),
+      s("bradley-uni.avif", "Bradley University", "https://www.bradley.edu"),
+      s("siu.png", "Southern Illinois University Carbondale", "https://siu.edu"),
+    ],
+  },
+  {
+    title: "Platinum Sponsors",
+    logos: [
+      s("university-of-illinois.png", "University of Illinois", "https://illinois.edu"),
+      s("isas.png", "Illinois State Academy of Science", "https://ilacadofsci.com/"),
+    ],
+  },
+  {
+    title: "Gold Sponsors",
+    logos: [
+      s("ameren.png", "Ameren Illinois", "https://www.ameren.com/illinois"),
+      s("experience-cu.png", "Experience Champaign-Urbana", "https://experiencecu.org"),
+      s("dawson.png", "Matthew & Emily Dawson"),
+    ],
+  },
+  {
+    title: "Silver Sponsors",
+    logos: [
+      s("accelsius.png", "Accelsius", "https://accelsius.com"),
+      s("illinois-soybean.png", "Illinois Soybean Association", "https://www.ilsoy.org"),
+      s("essaygrader.png", "EssayGrader", "https://essaygrader.ai"),
+      s("iwea.png", "Illinois Water Environment Association", "https://www.iweasite.org"),
+      s("hoffmann.png", "Jay and Jeremy Hoffmann Memorial Fund"),
+      s("ball.png", "Ball Seed"),
+    ],
+  },
+  {
+    title: "Bronze Sponsors",
+    logos: [
+      s("kevin-keehn.png", "Kevin Keehn"),
+      s("lokesh.png", "Lokesh Family"),
+      s("ali-uslu.png", "Ali Uslu"),
+      s("jann-hawkins.png", "Jann Hawkins"),
+      s("perfection-plating.png", "Perfection Plating", "https://www.perfectionplate.com"),
+      s("awwa.png", "AWWA Illinois Section", "https://www.isawwa.org"),
+      s("ilaudiology.png", "Illinois Academy of Audiology", "https://www.ilaudiology.org"),
+      s("hanson.png", "Hanson Professional Services", "https://www.hanson-inc.com"),
+      s("maurer-stutz.png", "Maurer-Stutz", "https://www.mstutz.com"),
+      s("iprb.png", "Illinois Petroleum Resources Board", "https://illinoispetroleumresourcesboard.org"),
+      s("ipa.png", "Illinois Psychological Association", "https://illinoispsychology.org"),
+      s("iepa.png", "Illinois Environmental Protection Agency", "https://epa.illinois.gov"),
+      s("aeg.png", "Association of Environmental & Engineering Geologists", "https://www.aegweb.org"),
+      s("ans.png", "American Nuclear Society", "https://www.ans.org"),
+    ],
+  },
+  {
+    title: "EPIC Partners",
+    logos: [
+      s("asce.png", "ASCE Central Illinois Section", "https://sections.asce.org/central-illinois"),
+      s("onr.png", "Office of Naval Research", "https://www.onr.navy.mil"),
+      s("cruce.png", "Cruce Agricultural Aviation", "https://www.cruceagaviation.com"),
+    ],
+  },
+  {
+    title: "Special Award Sponsors",
+    logos: [
+      s("morton.png", "The Morton Arboretum", "https://mortonarb.org"),
+      s("chicago-fire.png", "Chicago Fire Department", "https://www.chicago.gov/city/en/depts/cfd.html"),
+      s("lemelson.png", "The Lemelson Foundation", "https://www.lemelson.org"),
+    ],
+  },
+  {
+    title: "Friends of IJAS",
+    logos: [
+      s("griffins.png", "Griffin's Catering"),
+      s("bev-friend.png", "Bev Friend"),
+      s("langton.png", "Jonathan Langton"),
+      s("jay-hoffman.png", "Jay Hoffman"),
+      s("oriental-trading.png", "Oriental Trading", "https://www.orientaltrading.com"),
+      s("msi.png", "Museum of Science and Industry, Chicago", "https://www.msichicago.org"),
+    ],
+  },
+  {
+    title: "Past Donors & Sponsors",
+    logos: [
+      s("trevor-romain.png", "Trevor Romain Company", "https://trevorromain.com"),
+      s("hauser.png", "Hauser & Co Water Specialists"),
+      s("discover-peoria.png", "Discover Peoria", "https://peoria.org/"),
+      s("devry.png", "The DeVry Foundation"),
+      s("thoughtwave.png", "Thoughtwave Software and Solutions", "https://www.thoughtwavesoft.com"),
+      s("il-pathways.png", "Illinois Pathways"),
+      s("asce.png", "ASCE Illinois Section", "https://isasce.org"),
+      s("decatur.png", "Decatur Area Convention & Visitors Bureau", "https://decaturcvb.com"),
+      s("navs.png", "National Anti-Vivisection Society", "https://navs.org"),
+      s("aazk.png", "American Association of Zoo Keepers", "https://aazk.org"),
+      s("il-geo.png", "Illinois Geological Society"),
+      s("usg.png", "USG", "https://www.usg.com"),
+      s("omron.png", "OMRON", "https://www.omron.com"),
+      s("apple-dental.png", "Apple Dental", "https://appledentalpc.com/services.html"),
+      s("daigger.png", "Daigger Scientific", "https://www.daigger.com"),
+      s("cohen.png", "The Cohen Family"),
+      s("peaceable.png", "Peaceable Primate Sanctuary", "https://peaceableprimatesanctuary.com/"),
+      s("takeda.png", "Takeda", "https://www.takeda.com"),
+      s("basf.png", "BASF", "https://www.basf.com"),
+      s("northrop.png", "Northrop Grumman", "https://www.northropgrumman.com"),
+      s("oberweis.png", "Oberweis Funds", "https://www.oberweisfunds.com"),
+    ],
+  },
+];
+
+export const carouselLogos = [
+  s("illinois-university.avif", "University of Illinois Urbana-Champaign"),
+  s("bradley-uni.avif", "Bradley University"),
+  s("siu.png", "Southern Illinois University"),
+  s("university-of-illinois.png", "University of Illinois"),
+  s("isas.png", "Illinois State Academy of Science"),
+  s("ameren.png", "Ameren Illinois"),
+  s("experience-cu.png", "Experience Champaign-Urbana"),
+  s("illinois-soybean.png", "Illinois Soybean Association"),
+  s("ball.png", "Ball Seed"),
+  s("accelsius.png", "Accelsius"),
+  s("essaygrader.png", "EssayGrader"),
+  s("iwea.png", "Illinois Water Environment Association"),
+  s("asce.png", "ASCE"),
+  s("onr.png", "Office of Naval Research"),
+  s("morton.png", "The Morton Arboretum"),
+  s("chicago-fire.png", "Chicago Fire Department"),
+  s("lemelson.png", "The Lemelson Foundation"),
+  s("msi.png", "Museum of Science and Industry"),
+  s("iepa.png", "Illinois EPA"),
+  s("ans.png", "American Nuclear Society"),
+];
