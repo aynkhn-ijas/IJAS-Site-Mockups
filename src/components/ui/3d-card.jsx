@@ -4,8 +4,8 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 const MouseEnterContext = createContext(undefined);
 
-const SPRING = { stiffness: 180, damping: 22, mass: 0.6 };
-const MAX_TILT = 9;
+const SPRING = { stiffness: 90, damping: 28, mass: 0.9 };
+const MAX_TILT = 8;
 
 export function CardContainer({ children, className, containerClassName }) {
   const containerRef = useRef(null);
@@ -101,7 +101,7 @@ export function CardItem({
   }, [isMouseEntered, translateX, translateY, translateZ, rotateX, rotateY, rotateZ]);
 
   return (
-    <Tag ref={ref} className={cn("w-fit transition duration-500 ease-out", className)} {...rest}>
+    <Tag ref={ref} className={cn("w-fit transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none", className)} {...rest}>
       {children}
     </Tag>
   );

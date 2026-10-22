@@ -35,7 +35,7 @@ export default function CategoryAccordion({
             </span>
             <svg
               viewBox="0 0 20 20"
-              className={`mt-1 h-5 w-5 shrink-0 transition-transform duration-300 motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`}
+              className={`mt-1 h-5 w-5 shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`}
               aria-hidden="true"
             >
               <path d="M5 7.5 10 12.5 15 7.5" fill="none" stroke="currentColor" strokeWidth="1.8" />

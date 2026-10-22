@@ -38,8 +38,8 @@ export default function Stats() {
           return;
         }
         setSchoolsValue(600);
-        t1 = window.setTimeout(() => setProjectsValue(1200), 120);
-        t2 = window.setTimeout(() => setParticipantsValue(2300), 240);
+        t1 = window.setTimeout(() => setProjectsValue(1200), 180);
+        t2 = window.setTimeout(() => setParticipantsValue(2300), 360);
       },
       { threshold: 0.4 },
     );

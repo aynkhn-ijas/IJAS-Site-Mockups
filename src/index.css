@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Wix Madefor Text", sans-serif;
+  --font-serif: "Wix Madefor Text", sans-serif;
+  --font-mono: "Wix Madefor Text", sans-serif;
   --color-ijas-navy: #0e3b7b;
   --color-ijas-sky: #72a9f1;
   --color-ijas-blue: #1a4fa0;
@@ -26,7 +28,7 @@ body,
   min-width: 320px;
   background: #ffffff;
   color: var(--color-ijas-ink);
-  font-family: var(--font-sans);
+  font-family: "Wix Madefor Text", sans-serif;
 }
 
 body {
@@ -39,7 +41,7 @@ body {
 }
 
 #awards {
-  scroll-margin-top: 5.5rem;
+  scroll-margin-top: 6.5rem;
 }
 
 .prose-ijas {
@@ -152,7 +154,7 @@ body {
   display: grid;
   grid-template-rows: 0fr;
   overflow: hidden;
-  transition: grid-template-rows 280ms ease;
+  transition: grid-template-rows 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .accordion-panel > div {
@@ -160,12 +162,36 @@ body {
   overflow: hidden;
 }
 
-.accordion-panel:not(.is-open) > div {
-  display: none;
-}
-
 .accordion-panel.is-open {
   grid-template-rows: 1fr;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fade-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fade-in-up {
+  animation: fade-in-up 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -175,6 +201,11 @@ body {
 
   .animate-scroll {
     animation: none !important;
+  }
+
+  .fade-in,
+  .fade-in-up {
+    animation: none;
   }
 }
 

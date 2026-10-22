@@ -35,7 +35,7 @@ export default function GoldWinnersAccordion({
             <span className="text-[12px] font-normal text-ijas-muted">{count}</span>
             <svg
               viewBox="0 0 20 20"
-              className={`h-4 w-4 shrink-0 transition-transform duration-300 motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`}
+              className={`h-4 w-4 shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`}
               aria-hidden="true"
             >
               <path d="M5 7.5 10 12.5 15 7.5" fill="none" stroke="currentColor" strokeWidth="1.8" />

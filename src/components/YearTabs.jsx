@@ -19,7 +19,7 @@ export default function YearTabs({ year, onChange }) {
               aria-selected={active}
               aria-controls="awards"
               onClick={() => onChange(item)}
-              className={`rounded-md px-6 py-2 text-[16px] font-bold ${
+              className={`rounded-md px-6 py-2 text-[16px] font-bold transition-colors duration-200 ease-out ${
                 active ? "bg-ijas-navy text-white" : "border border-[#d1d5db] bg-white text-ijas-navy"
               }`}
             >

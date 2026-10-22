@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="bg-ijas-navy text-white">
       <div className="mx-auto grid max-w-[1100px] gap-8 px-6 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex items-center gap-3">
-          <img src={import.meta.env.BASE_URL + "ijas-seal.png"} alt="" className="h-14 w-14 shrink-0 rounded-full object-cover" />
+          <img src={import.meta.env.BASE_URL + "ijas-seal.png"} alt="" className="h-14 w-14 shrink-0 object-contain" />
           <p className="max-w-[14ch] text-[15px] font-medium leading-snug text-white">
             Illinois Junior Academy of Science
           </p>

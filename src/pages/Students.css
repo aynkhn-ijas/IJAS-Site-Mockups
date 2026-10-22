@@ -1,0 +1,447 @@
+/* Students page only. Header, nav, and footer stay on the shared site chrome. */
+.students-page {
+  --ijas-gray: #e6e6e6;
+  --ijas-dark-blue: rgb(12, 60, 125);
+  --ijas-light-blue: rgb(26, 90, 186);
+  --ijas-green: rgb(209, 255, 189);
+  --ijas-red: #841619;
+  --ijas-ink: #111111;
+  --ijas-white: #ffffff;
+  background: var(--ijas-white);
+  color: var(--ijas-ink);
+}
+
+.students-page a {
+  color: inherit;
+}
+
+.students-page .announcement {
+  display: flex;
+  min-height: 64px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  background: var(--ijas-light-blue);
+  text-align: center;
+}
+
+.students-page .announcement h2 {
+  margin: 0;
+  color: var(--ijas-white);
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.students-page .announcement a {
+  text-decoration: underline;
+}
+
+.students-page .hero {
+  position: relative;
+  height: 392px;
+  overflow: hidden;
+  background: var(--ijas-gray);
+}
+
+.students-page .hero img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.76);
+  opacity: 0.2;
+}
+
+.students-page .hero-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.students-page .hero h1 {
+  margin: 0;
+  color: var(--ijas-ink);
+  font-size: 40px;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+
+.students-page .content {
+  width: min(920px, calc(100% - 48px));
+  margin: 0 auto;
+  text-align: center;
+}
+
+.students-page .content h2 {
+  margin: 0 0 16px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.students-page .content p,
+.students-page .content li {
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.students-page .content a {
+  text-decoration: underline;
+}
+
+.students-page .student-overview {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 34px;
+  align-items: start;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0 24px 44px 0;
+  text-align: left;
+}
+
+.students-page .intro-section {
+  min-width: 0;
+}
+
+.students-page .student-guide-callout {
+  width: 100%;
+  margin: 0;
+  padding: 24px 40px;
+  border-radius: 0;
+  background: var(--ijas-dark-blue);
+  color: var(--ijas-white);
+  text-align: center;
+}
+
+.students-page .student-guide-callout a {
+  color: var(--ijas-white);
+}
+
+.students-page .membership-callout {
+  width: calc(100% - 48px);
+  margin: 0 auto 16px;
+  padding: 18px 24px;
+  border-radius: 18px;
+  background: var(--ijas-green);
+  color: var(--ijas-ink);
+  text-align: center;
+}
+
+.students-page .membership-callout a {
+  color: var(--ijas-ink);
+}
+
+.students-page .membership-callout h2 {
+  margin-bottom: 4px;
+  margin-left: 4px;
+  font-weight: 800;
+}
+
+.students-page .membership-callout p {
+  margin-bottom: 4px;
+  max-width: none;
+  font-weight: 400;
+  color: var(--ijas-ink);
+  opacity: 0.7;
+}
+
+.students-page .membership-callout p:last-child {
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+.students-page .intro-section p {
+  margin: 0;
+  max-width: 850px;
+  text-align: left;
+}
+
+.students-page .intro-section .membership-callout p {
+  margin: 0 auto 4px;
+  max-width: none;
+  text-align: center;
+}
+
+.students-page .intro-section .membership-callout p:last-child {
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+.students-page .general-reminder {
+  padding: 8px 20px 0;
+  line-height: 1.45;
+}
+
+.students-page .general-reminder strong {
+  font-weight: 800;
+}
+
+.students-page .date-block {
+  margin: 22px 0 14px;
+  padding: 0 20px;
+  text-align: left;
+}
+
+.students-page .section-label {
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.students-page .date-block ul {
+  margin: 0;
+  padding-left: 24px;
+  text-align: left;
+  font-weight: 700;
+  list-style: disc;
+}
+
+.students-page .date-block li {
+  margin: 4px 0;
+  line-height: 1.35;
+}
+
+.students-page .contest-link {
+  display: flex;
+  width: calc(100% - 48px);
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  margin: 18px 0 0;
+  padding: 10px 18px;
+  background: var(--ijas-light-blue);
+  color: var(--ijas-white);
+  font-size: 18px;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 18px;
+}
+
+.students-page .contest-link:hover {
+  background: var(--ijas-dark-blue);
+}
+
+.students-page .quick-links {
+  min-width: 0;
+  text-align: left;
+}
+
+.students-page .quick-links h2 {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  font-size: 24px;
+  text-align: left;
+}
+
+.students-page .quick-link-list {
+  display: grid;
+  gap: 12px;
+}
+
+.students-page .quick-link-list a {
+  position: relative;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 12px 42px 12px 16px;
+  background: var(--ijas-light-blue);
+  color: var(--ijas-white);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 25px;
+}
+
+.students-page .quick-link-list a::after {
+  position: absolute;
+  right: 16px;
+  content: "›";
+  color: var(--ijas-white);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.students-page .quick-link-list a:hover {
+  background: var(--ijas-dark-blue);
+}
+
+.students-page .project-section {
+  width: 80vw;
+  max-width: none;
+  padding: 24px 0 35px;
+}
+
+.students-page .project-heading-box {
+  display: flex;
+  width: 100%;
+  min-height: 97px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 16px;
+  background: rgba(230, 230, 230, 0.4);
+}
+
+.students-page .project-heading {
+  margin: 0;
+  font-size: 68px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.students-page .project-copy-box {
+  width: 95%;
+  margin: 0 auto 22px;
+  padding: 35px 46px 32px;
+  border: 0;
+  border-radius: 11px;
+  background: #dce9ff;
+  text-align: center;
+}
+
+.students-page .project-copy-box p {
+  max-width: none;
+  margin: 0 auto 30px;
+  font-size: 23px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.students-page .project-copy-box p:last-child {
+  margin-bottom: 0;
+}
+
+.students-page .project-section p {
+  max-width: 840px;
+  margin: 0 auto 30px;
+}
+
+.students-page .project-section .project-copy-box p {
+  max-width: none;
+  margin: 0 auto 30px;
+  text-align: center;
+}
+
+.students-page .project-section .project-copy-box p:last-child {
+  margin-bottom: 0;
+}
+
+.students-page .comparison-image {
+  display: block;
+  width: 120%;
+  max-width: none;
+  margin: 32px auto 12px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.students-page .text-section {
+  width: 80vw;
+  max-width: none;
+  padding: 22px 0 27px;
+}
+
+.students-page .text-section h2 {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.students-page .text-section p {
+  max-width: none;
+  margin: 0 auto 27px;
+  font-size: 23px;
+  text-align: left;
+}
+
+.students-page .final-section {
+  padding-bottom: 84px;
+}
+
+.students-page .note {
+  font-weight: 700;
+}
+
+@media (max-width: 920px) {
+  .students-page .hero {
+    height: 320px;
+  }
+
+  .students-page .hero h1 {
+    font-size: 58px;
+  }
+
+  .students-page .student-overview {
+    grid-template-columns: 1fr;
+    padding: 0 24px 44px;
+  }
+
+  .students-page .quick-links {
+    text-align: center;
+  }
+
+  .students-page .quick-links h2 {
+    text-align: center;
+  }
+}
+
+@media (max-width: 620px) {
+  .students-page .announcement h2 {
+    font-size: 18px;
+  }
+
+  .students-page .hero {
+    height: 245px;
+  }
+
+  .students-page .hero h1 {
+    font-size: 42px;
+  }
+
+  .students-page .content {
+    width: min(100% - 30px, 920px);
+  }
+
+  .students-page .project-section,
+  .students-page .text-section {
+    width: 80vw;
+  }
+
+  .students-page .content h2 {
+    font-size: 21px;
+  }
+
+  .students-page .project-heading-box {
+    min-height: 92px;
+  }
+
+  .students-page .project-heading {
+    font-size: 54px;
+  }
+
+  .students-page .project-copy-box {
+    width: 95%;
+    padding: 30px 24px;
+  }
+
+  .students-page .comparison-image {
+    width: 78%;
+  }
+
+  .students-page .content p,
+  .students-page .content li,
+  .students-page .quick-link-list a {
+    font-size: 16px;
+  }
+}

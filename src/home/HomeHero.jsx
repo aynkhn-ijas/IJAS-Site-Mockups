@@ -12,7 +12,7 @@ export default function HomeHero() {
           <img
             src={import.meta.env.BASE_URL + "ijas-seal.png"}
             alt="Illinois Junior Academy of Science seal, since 1927"
-            className="h-[140px] w-[140px] shrink-0 sm:h-[210px] sm:w-[210px] lg:h-[280px] lg:w-[280px]"
+            className="h-[140px] w-[140px] shrink-0 object-contain sm:h-[210px] sm:w-[210px] lg:h-[280px] lg:w-[280px]"
           />
           <h1 className="text-[26px] font-extrabold leading-[1.08] text-[#1f2937] sm:text-[40px] lg:text-[52px]">
             Illinois Junior Academy of

@@ -14,7 +14,7 @@ export default function CurrentSponsors() {
         </p>
         {sponsorGroups.map((group) => (
           <section key={group.title} className="mb-14">
-            <div className="mb-8 bg-[#D6EAF8] px-4 py-5 md:py-6">
+            <div className="mb-8 rounded-xl bg-[#D6EAF8] px-4 py-5 md:py-6">
               <h2 className="text-center text-[32px] font-semibold leading-tight text-[#1f2937] md:text-[42px]">
                 {group.title}
               </h2>
@@ -31,7 +31,7 @@ export default function CurrentSponsors() {
                 return (
                   <li
                     key={`${group.title}-${logo.name}`}
-                    className="flex h-[180px] w-[230px] items-center justify-center border border-black bg-white p-5"
+                    className="flex h-[180px] w-[230px] items-center justify-center rounded-xl border border-black bg-white p-5"
                   >
                     {logo.href ? (
                       <a

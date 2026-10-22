@@ -28,7 +28,7 @@ export default function FilterBar({
   specialCount,
 }) {
   return (
-    <div className="no-print sticky top-[69px] z-30 -mx-5 mt-4 border-y border-[#e5e7eb] bg-white px-5 py-3 sm:-mx-8 sm:px-8">
+    <div className="no-print sticky top-[95px] z-30 -mx-5 mt-4 border-y border-[#e5e7eb] bg-white px-5 py-3 sm:-mx-8 sm:px-8">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
         <fieldset className="min-w-0 border-0 p-0">
           <legend className="text-[12px] font-semibold text-ijas-navy">Division</legend>
@@ -41,7 +41,7 @@ export default function FilterBar({
                   type="button"
                   aria-pressed={active}
                   onClick={() => onDivision(item.id)}
-                  className={`rounded-md px-3 py-1.5 text-[13px] font-semibold ${
+                  className={`rounded-md px-3 py-1.5 text-[13px] font-semibold transition-colors duration-200 ease-out ${
                     active ? "bg-ijas-navy text-white" : "border border-[#d1d5db] bg-white text-ijas-navy"
                   }`}
                 >
@@ -90,7 +90,7 @@ export default function FilterBar({
             return (
               <label
                 key={item.id}
-                className={`inline-flex cursor-pointer items-center rounded-full border px-3 py-1 text-[13px] font-semibold ${
+                className={`inline-flex cursor-pointer items-center rounded-full border px-3 py-1 text-[13px] font-semibold transition-colors duration-200 ease-out ${
                   checked ? "border-ijas-navy bg-ijas-navy text-white" : "border-[#d1d5db] bg-white text-ijas-navy"
                 }`}
               >

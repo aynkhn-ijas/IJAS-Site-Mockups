@@ -30,13 +30,16 @@ import Teachers from "./pages/Teachers";
 import ThermoFisher from "./pages/ThermoFisher";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
+
 export default function App() {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
+          <Route path="who-we-are" element={<Navigate to="/about" replace />} />
           <Route path="about/announcements" element={<Announcements />} />
           <Route path="about/newsletters" element={<Navigate to="/newsletter" replace />} />
           <Route path="newsletter" element={<Newsletters />} />

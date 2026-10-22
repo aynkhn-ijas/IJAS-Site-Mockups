@@ -4,7 +4,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 function Chevron() {
   return (
-    <svg className="ml-0.5 inline-block h-[7px] w-[10px] shrink-0" viewBox="0 0 10 7" fill="none" aria-hidden="true">
+    <svg className="ml-1 inline-block h-[8px] w-[11px] shrink-0" viewBox="0 0 10 7" fill="none" aria-hidden="true">
       <path d="M1 1.2 5 5.2 9 1.2" stroke="currentColor" strokeWidth="1.4" />
     </svg>
   );
@@ -12,7 +12,7 @@ function Chevron() {
 
 function SearchIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden="true">
       <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.7" />
       <path d="M16 16.5 20.5 21" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
     </svg>
@@ -27,7 +27,7 @@ function isItemActive(item, pathname) {
 }
 
 function linkClass(active) {
-  return `relative inline-flex items-center whitespace-nowrap pb-1 text-[14px] text-[#1f2937] ${
+  return `relative inline-flex items-center whitespace-nowrap pb-1.5 text-[15.5px] text-[#1f2937] ${
     active ? "font-medium" : "font-normal"
   }`;
 }
@@ -101,20 +101,20 @@ export default function Header() {
       >
         Skip to content
       </a>
-      <div className="mx-auto flex min-h-[78px] max-w-[1240px] items-center justify-between gap-3 px-4 lg:px-6">
-        <Link to="/" className="flex shrink-0 items-center gap-3" aria-label="IJAS home" onClick={closeAll}>
-          <img src={import.meta.env.BASE_URL + "ijas-seal.png"} alt="" className="h-[52px] w-[52px] rounded-full object-cover" />
-          <span className="text-[20px] font-medium tracking-[0.08em] text-[#1f2937]">IJAS</span>
+      <div className="mx-auto flex min-h-[90px] max-w-[1240px] items-center justify-between gap-3 px-4 lg:px-6">
+        <Link to="/" className="flex shrink-0 items-center gap-3.5" aria-label="IJAS home" onClick={closeAll}>
+          <img src={import.meta.env.BASE_URL + "ijas-seal.png"} alt="" className="h-[60px] w-[60px] object-contain" />
+          <span className="text-[22px] font-medium tracking-[0.08em] text-[#1f2937]">IJAS</span>
         </Link>
 
-        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-x-4 pr-1 xl:flex" aria-label="Site navigation">
+        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-x-5 pr-1 xl:flex" aria-label="Site navigation">
           {primaryNav.map((item) => {
             const active = isItemActive(item, pathname);
             const isOpen = openMenu === item.label;
             return (
               <div
                 key={item.label}
-                className="relative py-3"
+                className="relative py-4"
                 onMouseEnter={() => item.children && setOpenMenu(item.label)}
                 onMouseLeave={() => setOpenMenu(null)}
               >
@@ -129,28 +129,33 @@ export default function Header() {
                     {item.label}
                     <Chevron />
                     <span
-                      className={`absolute bottom-0 left-0 h-[2px] w-full bg-ijas-navy ${active || isOpen ? "opacity-100" : "opacity-0"}`}
+                      className={`absolute bottom-0 left-0 h-[2px] w-full bg-ijas-navy transition-opacity duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${active || isOpen ? "opacity-100" : "opacity-0"}`}
                     />
                   </button>
                 ) : (
                   <NavLink to={item.to} end={item.to === "/"} className={linkClass(active)}>
                     {item.label}
                     <span
-                      className={`absolute bottom-0 left-0 h-[2px] w-full bg-ijas-navy ${active ? "opacity-100" : "opacity-0"}`}
+                      className={`absolute bottom-0 left-0 h-[2px] w-full bg-ijas-navy transition-opacity duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${active ? "opacity-100" : "opacity-0"}`}
                     />
                   </NavLink>
                 )}
-                {item.children && isOpen ? (
+                {item.children ? (
                   <ul
-                    className="absolute left-1/2 top-full z-30 min-w-[230px] -translate-x-1/2 rounded-sm border border-black/10 bg-white py-2 shadow-lg"
+                    className={`absolute left-1/2 top-full z-30 min-w-[240px] -translate-x-1/2 rounded-sm border border-black/10 bg-white py-2 shadow-lg transition-[opacity,transform,visibility] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                      isOpen
+                        ? "visible translate-y-0 opacity-100"
+                        : "invisible pointer-events-none -translate-y-1.5 opacity-0"
+                    }`}
                     role="menu"
+                    aria-hidden={!isOpen}
                   >
                     {item.children.map((child) => (
                       <li key={child.to} role="none">
                         <Link
                           to={child.to}
                           role="menuitem"
-                          className="block px-4 py-2 text-[13.5px] text-[#1f2937] hover:bg-[#F8F9FA]"
+                          className="block px-4 py-2.5 text-[14.5px] text-[#1f2937] transition-colors duration-200 ease-out hover:bg-[#F8F9FA]"
                           onClick={closeAll}
                         >
                           {child.label}
@@ -167,13 +172,13 @@ export default function Header() {
         <div className="flex shrink-0 items-center gap-2">
           <Link
             to="/login"
-            className="inline-flex h-[38px] items-center justify-center border-[1.5px] border-[#222] px-4 text-sm text-[#1f2937] sm:h-[40px] sm:px-5 sm:text-[15px]"
+            className="inline-flex h-[42px] items-center justify-center border-[1.5px] border-[#222] px-5 text-[15px] text-[#1f2937] sm:h-[44px] sm:px-6 sm:text-[16px]"
           >
             Login
           </Link>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center text-[#1f2937]"
+            className="inline-flex h-11 w-11 items-center justify-center text-[#1f2937]"
             aria-label="Search the site"
             onClick={() => setSearchOpen(true)}
           >
@@ -181,7 +186,7 @@ export default function Header() {
           </button>
           <button
             type="button"
-            className="no-print inline-flex h-10 w-10 items-center justify-center text-[#1f2937] xl:hidden"
+            className="no-print inline-flex h-11 w-11 items-center justify-center text-[#1f2937] xl:hidden"
             aria-expanded={mobileOpen}
             aria-controls={menuId}
             onClick={() => {
@@ -191,17 +196,17 @@ export default function Header() {
           >
             <span className="sr-only">{mobileOpen ? "Close menu" : "Open menu"}</span>
             <span className="flex flex-col gap-1.5">
-              <span className={`block h-px w-5 bg-[#1f2937] transition ${mobileOpen ? "translate-y-[7px] rotate-45" : ""}`} />
-              <span className={`block h-px w-5 bg-[#1f2937] transition ${mobileOpen ? "opacity-0" : ""}`} />
-              <span className={`block h-px w-5 bg-[#1f2937] transition ${mobileOpen ? "-translate-y-[7px] -rotate-45" : ""}`} />
+              <span className={`block h-px w-6 bg-[#1f2937] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${mobileOpen ? "translate-y-[8px] rotate-45" : ""}`} />
+              <span className={`block h-px w-6 bg-[#1f2937] transition-opacity duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${mobileOpen ? "opacity-0" : ""}`} />
+              <span className={`block h-px w-6 bg-[#1f2937] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${mobileOpen ? "-translate-y-[8px] -rotate-45" : ""}`} />
             </span>
           </button>
         </div>
       </div>
 
       {mobileOpen ? (
-        <nav id={menuId} className="no-print border-t border-black/5 bg-white xl:hidden" aria-label="Mobile navigation">
-          <div className="flex max-h-[calc(100vh-82px)] flex-col gap-1 overflow-y-auto px-5 py-3 text-[15px]">
+        <nav id={menuId} className="no-print fade-in-up border-t border-black/5 bg-white xl:hidden" aria-label="Mobile navigation">
+          <div className="flex max-h-[calc(100vh-94px)] flex-col gap-1 overflow-y-auto px-5 py-4 text-[16px]">
             {primaryNav.map((item) => {
               const isOpen = openMenu === item.label;
               const active = isItemActive(item, pathname);
@@ -243,9 +248,9 @@ export default function Header() {
       ) : null}
 
       {searchOpen ? (
-        <div className="no-print fixed inset-0 z-[60] bg-black/40" onClick={() => setSearchOpen(false)}>
+        <div className="no-print fade-in fixed inset-0 z-[60] bg-black/40" onClick={() => setSearchOpen(false)}>
           <div
-            className="mx-auto mt-20 max-w-xl rounded-md bg-white p-5 shadow-xl"
+            className="fade-in-up mx-auto mt-24 max-w-xl rounded-md bg-white p-5 shadow-xl"
             onClick={(event) => event.stopPropagation()}
             role="dialog"
             aria-modal="true"
