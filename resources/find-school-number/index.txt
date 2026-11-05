@@ -1,0 +1,19 @@
+1:"$Sreact.fragment"
+2:I[8938,["176","static/chunks/176-dbfe7d379a5d476e.js","7177","static/chunks/app/layout-8691ed6d12f89e59.js"],"default"]
+3:I[9766,[],""]
+4:I[8924,[],""]
+5:I[384,["176","static/chunks/176-dbfe7d379a5d476e.js","4345","static/chunks/app/not-found-f5168561fa465cb9.js"],"default"]
+6:I[1111,["176","static/chunks/176-dbfe7d379a5d476e.js","9017","static/chunks/app/resources/find-school-number/page-4defe82d7fff647e.js"],"default"]
+7:I[4431,[],"OutletBoundary"]
+9:I[5278,[],"AsyncMetadataOutlet"]
+b:I[4431,[],"ViewportBoundary"]
+d:I[4431,[],"MetadataBoundary"]
+e:"$Sreact.suspense"
+10:I[7150,[],""]
+:HL["/IJAS-Site-Mockups/_next/static/css/a82e4cf2dbeb41d5.css","style"]
+0:{"P":null,"b":"61saxDMhcOQQLn3F9a1R2","p":"/IJAS-Site-Mockups","c":["","resources","find-school-number",""],"i":false,"f":[[["",{"children":["resources",{"children":["find-school-number",{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/IJAS-Site-Mockups/_next/static/css/a82e4cf2dbeb41d5.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":""}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500;600;700;800&display=swap","rel":"stylesheet"}]]}],["$","body",null,{"children":["$","$L2",null,{"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","$L5",null,{}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]]}],{"children":["resources",["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["find-school-number",["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$L6",null,{}],null,["$","$L7",null,{"children":["$L8",["$","$L9",null,{"promise":"$@a"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$Lb",null,{"children":"$Lc"}],null],["$","$Ld",null,{"children":["$","div",null,{"hidden":true,"children":["$","$e",null,{"fallback":null,"children":"$Lf"}]}]}]]}],false]],"m":"$undefined","G":["$10",[]],"s":false,"S":true}
+c:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+8:null
+11:I[622,[],"IconMark"]
+a:{"metadata":[["$","title","0",{"children":"Illinois Junior Academy of Science"}],["$","meta","1",{"name":"description","content":"Illinois Junior Academy of Science — statewide science expositions, membership, and State Exposition awards."}],["$","link","2",{"rel":"icon","href":"/ijas-seal.png"}],["$","$L11","3",{}]],"error":null,"digest":"$undefined"}
+f:"$a:metadata"
