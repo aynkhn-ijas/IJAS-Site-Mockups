@@ -1,3 +1,5 @@
+"use client";
+
 import { carouselLogos } from "@/data/sponsors";
 
 export default function SponsorCarousel() {

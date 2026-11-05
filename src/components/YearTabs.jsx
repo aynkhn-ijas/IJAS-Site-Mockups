@@ -1,6 +1,8 @@
+"use client";
+
 const YEARS = [2025, 2026];
 
-export default function YearTabs({ year, onChange }) {
+export default function YearTabs({ year, onChange, controlsId = "awards" }) {
   return (
     <div className="no-print border-b border-[#e5e7eb] bg-white">
       <div
@@ -17,7 +19,7 @@ export default function YearTabs({ year, onChange }) {
               role="tab"
               id={`year-tab-${item}`}
               aria-selected={active}
-              aria-controls="awards"
+              aria-controls={controlsId}
               onClick={() => onChange(item)}
               className={`rounded-md px-6 py-2 text-[16px] font-bold transition-colors duration-200 ease-out ${
                 active ? "bg-ijas-navy text-white" : "border border-[#d1d5db] bg-white text-ijas-navy"

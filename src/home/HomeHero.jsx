@@ -1,8 +1,11 @@
+"use client";
+import { asset } from "@/lib/asset";
+
 export default function HomeHero() {
   return (
     <section className="relative isolate h-[340px] overflow-hidden sm:h-[420px] lg:h-[500px]">
       <img
-        src={import.meta.env.BASE_URL + "assets/hero.jpg"}
+        src={asset("/assets/hero.jpg")}
         alt="IJAS state science fair hall with student poster boards"
         className="absolute inset-0 h-full w-full object-cover object-[center_42%]"
       />
@@ -10,7 +13,7 @@ export default function HomeHero() {
       <div className="relative mx-auto flex h-full max-w-[1180px] items-center px-5 lg:px-8">
         <div className="flex max-w-full items-center gap-4 sm:gap-6 lg:gap-8">
           <img
-            src={import.meta.env.BASE_URL + "ijas-seal.png"}
+            src={asset("/ijas-seal.png")}
             alt="Illinois Junior Academy of Science seal, since 1927"
             className="h-[140px] w-[140px] shrink-0 object-contain sm:h-[210px] sm:w-[210px] lg:h-[280px] lg:w-[280px]"
           />

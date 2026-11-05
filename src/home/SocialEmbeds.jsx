@@ -1,3 +1,6 @@
+"use client";
+import { asset } from "@/lib/asset";
+
 function InstagramIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor" aria-hidden="true">
@@ -69,7 +72,7 @@ export default function SocialEmbeds() {
       <div className="mx-auto grid max-w-[1100px] gap-8 px-4 py-10 lg:grid-cols-2">
         <article className="overflow-hidden rounded-xl border border-black/10 bg-white shadow-sm">
           <div className="flex items-center gap-3 border-b border-black/10 p-4">
-            <img src={import.meta.env.BASE_URL + "assets/ijas-seal-small.png"} alt="" className="h-12 w-12 object-contain" />
+            <img src={asset("/assets/ijas-seal-small.png")} alt="" className="h-12 w-12 object-contain" />
             <div className="min-w-0">
               <p className="truncate font-semibold">ijas_il</p>
               <p className="truncate text-sm text-neutral-500">Illinois Jr Academy of Science</p>
@@ -82,9 +85,9 @@ export default function SocialEmbeds() {
             </a>
           </div>
           <div className="grid grid-cols-3 gap-px bg-neutral-200">
-            {[(import.meta.env.BASE_URL + "cards/students.jpg"), (import.meta.env.BASE_URL + "cards/teachers.jpg"), (import.meta.env.BASE_URL + "cards/volunteers.jpg"), (import.meta.env.BASE_URL + "cards/donors.jpg"), (import.meta.env.BASE_URL + "assets/hero.jpg"), (import.meta.env.BASE_URL + "audience.jpg"), (import.meta.env.BASE_URL + "ijas-assets/student-hero.png"), (import.meta.env.BASE_URL + "cards/students.jpg"), (import.meta.env.BASE_URL + "cards/teachers.jpg")].map(
+            {["/cards/students.jpg", "/cards/teachers.jpg", "/cards/volunteers.jpg", "/cards/donors.jpg", "/assets/hero.jpg", "/audience.jpg", "/ijas-assets/student-hero.png", "/cards/students.jpg", "/cards/teachers.jpg"].map(
               (src, i) => (
-                <img key={i} src={src} alt="" className="aspect-square object-cover" />
+                <img key={i} src={asset(src)} alt="" className="aspect-square object-cover" />
               ),
             )}
           </div>

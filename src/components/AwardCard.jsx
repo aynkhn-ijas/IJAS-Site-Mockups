@@ -1,3 +1,5 @@
+"use client";
+
 const DOT = {
   gold: "bg-[#C6A15B]",
 };

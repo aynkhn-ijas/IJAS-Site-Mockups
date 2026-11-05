@@ -1,8 +1,11 @@
-export default function PageHero({ title, image = (import.meta.env.BASE_URL + "audience.jpg"), kicker }) {
+"use client";
+import { asset } from "@/lib/asset";
+
+export default function PageHero({ title, image = "/audience.jpg", kicker }) {
   return (
     <section className="relative flex h-[190px] items-center justify-center overflow-hidden md:h-[250px]">
       <img
-        src={image}
+        src={asset(image)}
         alt=""
         className="absolute inset-0 h-full w-full object-cover object-[center_42%] grayscale brightness-[1.15]"
       />

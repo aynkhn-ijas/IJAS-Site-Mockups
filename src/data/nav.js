@@ -43,6 +43,8 @@ export const primaryNav = [
       { label: "Additional Contests", to: "/competition/additional-contests" },
       { label: "IJAS - ISEF", to: "/competition/isef" },
       { label: "Awards & Results", to: "/awards" },
+      { label: "Awards by Value", to: "/awards-by-value" },
+      { label: "Project Database", to: "/projects" },
     ],
   },
 ];
@@ -85,6 +87,8 @@ export const searchPages = [
   { label: "Additional Contests", to: "/competition/additional-contests", keywords: "essay design scholarship grant" },
   { label: "IJAS - ISEF", to: "/competition/isef", keywords: "isef regeneron international" },
   { label: "Awards & Results", to: "/awards", keywords: "awards results epic gold special 2025 2026" },
+  { label: "Awards by Value", to: "/awards-by-value", keywords: "awards value thermo fisher isef scholarship gold" },
+  { label: "Project Database", to: "/projects", keywords: "project database search finalists table" },
   { label: "Login", to: "/login", keywords: "login account members" },
 ];
 

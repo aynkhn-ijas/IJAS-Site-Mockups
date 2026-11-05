@@ -1,4 +1,6 @@
-import { NavLink } from "react-router-dom";
+"use client";
+
+import { NavLink } from "@/lib/navigation";
 
 export function Subnav({ items }) {
   return (

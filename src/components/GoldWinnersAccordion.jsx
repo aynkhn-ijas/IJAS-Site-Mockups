@@ -1,4 +1,7 @@
-import { useId, useState } from "react";
+"use client";
+
+import useSettledClosed from "@/hooks/useSettledClosed";
+import { useId, useRef, useState } from "react";
 import DivisionColumn from "./DivisionColumn";
 
 export default function GoldWinnersAccordion({
@@ -10,6 +13,8 @@ export default function GoldWinnersAccordion({
 }) {
   const [open, setOpen] = useState(false);
   const expanded = forceOpen || open;
+  const panelRef = useRef(null);
+  const settledClosed = useSettledClosed(expanded, panelRef);
   const panelId = useId();
   const headingId = useId();
   const columns = [
@@ -48,7 +53,8 @@ export default function GoldWinnersAccordion({
         role="region"
         aria-labelledby={headingId}
         aria-hidden={expanded ? undefined : true}
-        className={`accordion-panel ${expanded ? "is-open" : ""}`}
+        ref={panelRef}
+        className={`accordion-panel ${expanded ? "is-open" : ""} ${settledClosed ? "is-settled" : ""}`}
       >
         <div>
           <div className={`category-columns grid gap-4 pt-2 ${columns.length > 1 ? "cols-2 sm:grid-cols-2" : ""}`}>

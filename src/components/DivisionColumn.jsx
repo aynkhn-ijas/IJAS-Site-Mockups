@@ -1,3 +1,5 @@
+"use client";
+
 import AwardCard from "./AwardCard";
 
 export default function DivisionColumn({ title, entries }) {

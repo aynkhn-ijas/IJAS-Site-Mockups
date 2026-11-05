@@ -1,4 +1,7 @@
-import { useId, useState } from "react";
+"use client";
+
+import useSettledClosed from "@/hooks/useSettledClosed";
+import { useId, useRef, useState } from "react";
 import EpicAwardsSection from "./EpicAwardsSection";
 import GoldWinnersAccordion from "./GoldWinnersAccordion";
 import SpecialAwardsSection from "./SpecialAwardsSection";
@@ -14,6 +17,8 @@ export default function CategoryAccordion({
 }) {
   const [open, setOpen] = useState(false);
   const expanded = forceOpen || open;
+  const panelRef = useRef(null);
+  const settledClosed = useSettledClosed(expanded, panelRef);
   const panelId = useId();
   const headingId = useId();
   const projectLabel = `${projectCount} ${projectCount === 1 ? "project" : "projects"}`;
@@ -59,7 +64,8 @@ export default function CategoryAccordion({
             role="region"
             aria-labelledby={headingId}
             aria-hidden={expanded ? undefined : true}
-            className={`accordion-panel ${expanded ? "is-open" : ""}`}
+            ref={panelRef}
+            className={`accordion-panel ${expanded ? "is-open" : ""} ${settledClosed ? "is-settled" : ""}`}
           >
             <div>
               <EpicAwardsSection highSchool={epicAwards.highSchool} middleSchool={epicAwards.middleSchool} />

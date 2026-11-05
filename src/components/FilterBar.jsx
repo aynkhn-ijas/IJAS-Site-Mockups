@@ -1,3 +1,5 @@
+"use client";
+
 const DIVISIONS = [
   { id: "all", label: "All" },
   { id: "senior", label: "Senior (9–12)" },

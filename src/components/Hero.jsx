@@ -1,3 +1,6 @@
+"use client";
+import { asset } from "@/lib/asset";
+
 import { YEAR_EVENTS } from "../data/years";
 
 export default function Hero({ year }) {
@@ -6,7 +9,7 @@ export default function Hero({ year }) {
   return (
     <section className="relative flex h-[220px] items-center justify-center overflow-hidden md:h-[300px]" aria-labelledby="hero-title">
       <img
-        src={import.meta.env.BASE_URL + "audience.jpg"}
+        src={asset("/audience.jpg")}
         alt=""
         className="absolute inset-0 h-full w-full object-cover grayscale"
       />

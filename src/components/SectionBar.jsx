@@ -1,3 +1,5 @@
+"use client";
+
 export default function SectionBar({ children, tone = "navy", as: Tag = "h2" }) {
   const background = tone === "green" ? "bg-ijas-green" : "bg-ijas-navy";
   return (

@@ -1,5 +1,6 @@
+import { asset } from "@/lib/asset";
 const s = (file, name, href) => ({
-  src: `${import.meta.env.BASE_URL}sponsors/${file}`,
+  src: asset(`/sponsors/${file}`),
   name,
   href: href || null,
 });

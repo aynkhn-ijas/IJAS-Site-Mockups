@@ -1,6 +1,9 @@
+"use client";
+import { asset } from "@/lib/asset";
+
 import { primaryNav, searchPages } from "@/data/nav";
 import { useEffect, useId, useRef, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "@/lib/navigation";
 
 function Chevron() {
   return (
@@ -103,7 +106,7 @@ export default function Header() {
       </a>
       <div className="mx-auto flex min-h-[90px] max-w-[1240px] items-center justify-between gap-3 px-4 lg:px-6">
         <Link to="/" className="flex shrink-0 items-center gap-3.5" aria-label="IJAS home" onClick={closeAll}>
-          <img src={import.meta.env.BASE_URL + "ijas-seal.png"} alt="" className="h-[60px] w-[60px] object-contain" />
+          <img src={asset("/ijas-seal.png")} alt="" className="h-[60px] w-[60px] object-contain" />
           <span className="text-[22px] font-medium tracking-[0.08em] text-[#1f2937]">IJAS</span>
         </Link>
 

@@ -153,13 +153,45 @@ body {
 .accordion-panel {
   display: grid;
   grid-template-rows: 0fr;
-  overflow: hidden;
-  transition: grid-template-rows 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: clip;
+  transition: grid-template-rows var(--accordion-ms, 420ms) cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .accordion-panel > div {
   min-height: 0;
-  overflow: hidden;
+  overflow: clip;
+}
+
+/* Collapsed 0fr tracks must not add scrollable overflow below the footer. */
+@supports not (overflow: clip) {
+  .accordion-panel,
+  .accordion-panel > div {
+    overflow: hidden;
+  }
+}
+
+.award-value-list {
+  --accordion-ms: 320ms;
+}
+
+@supports (interpolate-size: allow-keywords) {
+  .award-value-list .accordion-panel {
+    display: block;
+    height: 0;
+    overflow: clip;
+    interpolate-size: allow-keywords;
+    transition: height var(--accordion-ms, 320ms) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .award-value-list .accordion-panel.is-open {
+    height: auto;
+  }
+}
+
+/* A closed panel's contents still extend document scroll height in Chrome.
+   Hide them only after the close transition so the height animation can finish. */
+.accordion-panel.is-settled:not(.is-open) > div {
+  content-visibility: hidden;
 }
 
 .accordion-panel.is-open {
@@ -195,8 +227,10 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .accordion-panel {
+  .accordion-panel,
+  .award-value-list .accordion-panel {
     transition: none;
+    interpolate-size: numeric-only;
   }
 
   .animate-scroll {
@@ -221,13 +255,18 @@ body {
   }
 
   .accordion-panel,
-  .accordion-panel.is-open {
+  .accordion-panel.is-open,
+  .award-value-list .accordion-panel,
+  .award-value-list .accordion-panel.is-open {
     grid-template-rows: 1fr !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
   .accordion-panel > div {
     display: block !important;
     overflow: visible !important;
+    content-visibility: visible !important;
   }
 
   .winner-card {

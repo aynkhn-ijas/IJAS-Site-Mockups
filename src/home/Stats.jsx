@@ -1,3 +1,6 @@
+"use client";
+import { asset } from "@/lib/asset";
+
 import Counter from "@/components/react-bits/Counter";
 import { useEffect, useRef, useState } from "react";
 
@@ -65,7 +68,7 @@ export default function Stats() {
       <div className="mx-auto grid max-w-[980px] gap-10 sm:grid-cols-3 sm:gap-6">
         <div className="flex flex-col items-center text-center">
           <img
-            src={import.meta.env.BASE_URL + "icons/schools.png"}
+            src={asset("/icons/schools.png")}
             alt=""
             className="mb-3 h-20 w-20 object-contain object-center sm:h-24 sm:w-24 lg:h-32 lg:w-32"
           />
@@ -80,7 +83,7 @@ export default function Stats() {
 
         <div className="flex flex-col items-center text-center">
           <img
-            src={import.meta.env.BASE_URL + "icons/projects.png"}
+            src={asset("/icons/projects.png")}
             alt=""
             className="mb-3 h-20 w-20 object-contain object-center sm:h-24 sm:w-24 lg:h-32 lg:w-32"
           />
@@ -97,7 +100,7 @@ export default function Stats() {
 
         <div className="flex flex-col items-center text-center">
           <img
-            src={import.meta.env.BASE_URL + "icons/participants.png"}
+            src={asset("/icons/participants.png")}
             alt=""
             className="mb-3 h-20 w-20 object-contain object-center sm:h-24 sm:w-24 lg:h-32 lg:w-32"
           />

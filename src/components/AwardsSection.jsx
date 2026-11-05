@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo, useState } from "react";
 import CategoryAccordion from "./CategoryAccordion";
 import FilterBar from "./FilterBar";

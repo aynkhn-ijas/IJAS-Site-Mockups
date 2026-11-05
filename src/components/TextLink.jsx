@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import { Link } from "@/lib/navigation";
 
 const className =
   "font-semibold text-ijas-navy underline decoration-ijas-sky underline-offset-2 hover:text-[#0a2f63]";

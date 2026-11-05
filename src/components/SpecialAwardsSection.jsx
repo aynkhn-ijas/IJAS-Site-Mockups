@@ -1,3 +1,5 @@
+"use client";
+
 import DivisionColumn from "./DivisionColumn";
 
 export default function SpecialAwardsSection({ highSchool = [], middleSchool = [] }) {

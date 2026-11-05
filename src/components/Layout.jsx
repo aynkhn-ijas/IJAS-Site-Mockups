@@ -1,15 +1,16 @@
+"use client";
+
 import Footer from "./Footer";
 import Header from "./Header";
 import ScrollToTop from "./ScrollToTop";
-import { Outlet } from "react-router-dom";
 
-export default function Layout() {
+export default function Layout({ children }) {
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <ScrollToTop />
       <Header />
       <main id="main-content" className="flex-1">
-        <Outlet />
+        {children}
       </main>
       <Footer />
     </div>
