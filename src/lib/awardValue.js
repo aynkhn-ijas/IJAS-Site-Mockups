@@ -1,3 +1,7 @@
+import { displayAward } from "../data/projects.js";
+
+const PLAIN_AWARDS = new Set(["gold", "silver", "bronze", "participation"]);
+
 export function parseDollars(name) {
   const match = String(name).match(/\$\s*([\d,]+)\s*(k)?/i);
   if (!match) return null;
@@ -6,11 +10,18 @@ export function parseDollars(name) {
   return match[2] ? amount * 1000 : amount;
 }
 
-function thermoSort(name) {
-  if (/state/i.test(name) && !/region/i.test(name)) return 0;
-  const region = name.match(/region\s*(\d+)/i);
-  if (region) return Number(region[1]);
-  return 80;
+export function headingValue(name) {
+  const dollars = parseDollars(name);
+  if (dollars == null || String(name).includes("$")) return "";
+  return ` · $${dollars.toLocaleString("en-US")}`;
+}
+
+function cleanAward(name) {
+  return String(name || "").replace(/\s+/g, " ").trim();
+}
+
+function isPlainAward(name) {
+  return PLAIN_AWARDS.has(cleanAward(name).toLowerCase());
 }
 
 function prestige(name) {
@@ -33,19 +44,13 @@ function prestige(name) {
   return 800;
 }
 
-function isEpicName(name) {
-  const text = String(name).trim();
-  return /^(epic|exceptional project|execptional project)\b/i.test(text) || /epic/i.test(text);
-}
-
 export function awardBand(name) {
+  if (/thermo fisher/i.test(name)) return null;
   const dollars = parseDollars(name);
   if (/isef/i.test(name)) return { band: 2, sort: 0, dollars: null };
   if (dollars != null && dollars >= 1000) return { band: 1, sort: -dollars, dollars };
   if (dollars != null) return { band: 4, sort: -dollars, dollars };
-  if (/thermo fisher/i.test(name)) return { band: 8.5, sort: thermoSort(name), dollars: null };
-  // EPIC sits after every other special, including Thermo Fisher, and before Gold.
-  if (isEpicName(name)) return { band: 8.75, sort: 0, dollars: null };
+  if (/epic/i.test(name)) return { band: 8, sort: 0, dollars: null };
   return { band: 6, sort: -prestige(name), dollars: null };
 }
 
@@ -54,51 +59,16 @@ function regionNumber(region) {
   return match ? Number(match[1]) : 99;
 }
 
+function compareText(a, b) {
+  return String(a || "").localeCompare(String(b || ""), undefined, { numeric: true, sensitivity: "base" });
+}
+
 export function sortProjects(projects) {
   return [...projects].sort((a, b) => {
     const region = regionNumber(a.region) - regionNumber(b.region);
     if (region !== 0) return region;
-    return displayName(a).localeCompare(displayName(b));
+    return compareText(a.school, b.school) || compareText(a.category, b.category) || compareText(a.title, b.title);
   });
-}
-
-export function displayName(project) {
-  if (project.exhibitors) return project.exhibitors;
-  return project.students
-    .map((student) => student.name)
-    .filter(Boolean)
-    .join(", ");
-}
-
-export function gradeLabel(project) {
-  const grades = project.students.map((student) => student.grade).filter(Boolean);
-  if (grades.length === 0) return "";
-  if (grades.length === 1) return `Grade ${grades[0]}`;
-  return `Grades ${grades.join(", ")}`;
-}
-
-export function isExcludedStatus(project) {
-  return project.finalAward === "CANCEL" || project.finalAward === "NOSHOW";
-}
-
-export function awardsWon(project) {
-  const parts = [];
-  const medal = String(project.finalAward || "").trim();
-  if (medal && medal !== "CANCEL" && medal !== "NOSHOW") {
-    parts.push(medal.charAt(0) + medal.slice(1).toLowerCase());
-  } else if (medal === "CANCEL") {
-    parts.push("Canceled");
-  } else if (medal === "NOSHOW") {
-    parts.push("No show");
-  }
-  for (const award of project.specialAwards || []) {
-    if (award) parts.push(award);
-  }
-  return parts.join("; ");
-}
-
-function cleanAward(name) {
-  return String(name).replace(/\s+/g, " ").trim();
 }
 
 function sectionId(name) {
@@ -109,17 +79,35 @@ function sectionId(name) {
   return slug || "award";
 }
 
+function specialLabels(project) {
+  const labels = [];
+  for (const award of project.awards || []) {
+    const cleaned = cleanAward(award);
+    if (!cleaned || isPlainAward(cleaned)) continue;
+    const label = displayAward(cleaned);
+    if (!labels.includes(label)) labels.push(label);
+  }
+  return labels;
+}
+
+function isRecipientOnly(project) {
+  const flag = project.awardRecipient;
+  return flag === true || String(flag || "").toLowerCase() === "yes";
+}
+
+function isBlank(project) {
+  return !cleanAward(project.title) || !project.students?.length;
+}
+
 export function buildAwardSections(projects) {
   const groups = new Map();
-  const gold = [];
   const unnamed = [];
 
   for (const project of projects) {
-    const specials = [...new Set((project.specialAwards || []).filter(Boolean).map(cleanAward))];
-    const marked = String(project.awardRecipient || "").toLowerCase() === "yes";
+    if (isBlank(project)) continue;
+    const specials = specialLabels(project);
     if (specials.length === 0) {
-      if (marked) unnamed.push(project);
-      else if (project.finalAward === "GOLD") gold.push(project);
+      if (isRecipientOnly(project)) unnamed.push(project);
       continue;
     }
     for (const award of specials) {
@@ -129,17 +117,20 @@ export function buildAwardSections(projects) {
   }
 
   const usedIds = new Map();
-  const sections = [...groups.entries()].map(([name, entries]) => {
+  const sections = [];
+  for (const [name, entries] of groups.entries()) {
+    const band = awardBand(name);
+    if (!band) continue;
     const base = sectionId(name);
     const seen = usedIds.get(base) || 0;
     usedIds.set(base, seen + 1);
-    return {
+    sections.push({
       id: seen === 0 ? base : `${base}-${seen + 1}`,
       name,
       projects: sortProjects(entries),
-      ...awardBand(name),
-    };
-  });
+      ...band,
+    });
+  }
 
   if (unnamed.length) {
     sections.push({
@@ -147,16 +138,6 @@ export function buildAwardSections(projects) {
       name: "Special Award Recipient",
       projects: sortProjects(unnamed),
       band: 7,
-      sort: 0,
-      dollars: null,
-    });
-  }
-  if (gold.length) {
-    sections.push({
-      id: "gold-award",
-      name: "Gold Award",
-      projects: sortProjects(gold),
-      band: 9,
       sort: 0,
       dollars: null,
     });
