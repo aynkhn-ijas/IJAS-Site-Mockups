@@ -2,7 +2,7 @@
 
 import PageHero from "@/components/PageHero";
 import YearTabs from "@/components/YearTabs";
-import { getProject, listed, presenterLine, projectsForYear, studentLine } from "@/data/projects";
+import { listed, presenterLine, projects as bundledProjects, studentLine } from "@/data/projects";
 import usePageTitle from "@/hooks/usePageTitle";
 import { buildAwardSections, headingValue } from "@/lib/awardValue";
 import Link from "next/link";
@@ -17,11 +17,14 @@ function matchesQuery(project, awardName, query) {
     .includes(needle);
 }
 
-export default function AwardsByValue() {
+export default function AwardsByValue({ projects = bundledProjects }) {
   const [year, setYear] = useState(2026);
   const [query, setQuery] = useState("");
   usePageTitle("Awards");
-  const sections = useMemo(() => buildAwardSections(projectsForYear(year)), [year]);
+  const sections = useMemo(
+    () => buildAwardSections(projects.filter((project) => project.year === Number(year))),
+    [projects, year],
+  );
   const visible = useMemo(
     () =>
       sections
@@ -97,12 +100,11 @@ export default function AwardsByValue() {
 }
 
 function ProjectTitle({ project }) {
-  const profile = getProject(project.id);
   const title = project.title || "Title not listed";
   const className = "font-semibold text-ijas-navy hover:underline";
-  if (!profile) return <span className={className}>{title}</span>;
+  if (!project.id) return <span className={className}>{title}</span>;
   return (
-    <Link href={`/projects/${profile.id}/`} className={className}>
+    <Link href={`/projects/${project.id}`} className={className}>
       {title}
     </Link>
   );

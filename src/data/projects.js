@@ -35,6 +35,10 @@ function awardList(finalAward, specials) {
   return awards;
 }
 
+export function isDroppedAward(value) {
+  return DROPPED_AWARDS.has(medal(value));
+}
+
 function slugPart(value) {
   return clean(value)
     .toLowerCase()
@@ -114,7 +118,7 @@ function assignIds(rows) {
     let n = 2;
     while (used.has(id)) id = `${base}-${n++}`;
     used.add(id);
-    return {
+    const project = {
       id,
       year: row.year,
       title: row.title,
@@ -126,7 +130,19 @@ function assignIds(rows) {
       projectType: row.projectType,
       awards: row.awards,
     };
+    if (row.awardRecipient) project.awardRecipient = row.awardRecipient;
+    return project;
   });
+}
+
+function withStoredAbstract(project) {
+  if (project.abstract) return project;
+  const abstract = abstractsById[project.id];
+  return abstract ? { ...project, abstract } : project;
+}
+
+export function finalizeProjectRows(rows) {
+  return assignIds(rows.filter((row) => !row.dropped && !isBlank(row))).map(withStoredAbstract);
 }
 
 const sourceRows = [
@@ -134,10 +150,7 @@ const sourceRows = [
   ...awards2025.flatMap((group) => group.projects.map((project) => from2025(group, project))),
 ];
 
-export const projects = assignIds(sourceRows.filter((row) => !row.dropped && !isBlank(row))).map((project) => {
-  const abstract = abstractsById[project.id];
-  return abstract ? { ...project, abstract } : project;
-});
+export const projects = finalizeProjectRows(sourceRows);
 
 const byId = new Map(projects.map((project) => [project.id, project]));
 

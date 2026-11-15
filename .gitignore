@@ -25,3 +25,12 @@ dist-ssr
 *.sw?
 
 out
+
+# Secrets (never commit)
+.env
+.env.*
+.env*.local
+!.env.example
+
+# Static export staging
+.static-build

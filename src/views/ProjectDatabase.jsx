@@ -2,7 +2,7 @@
 
 import PageHero from "@/components/PageHero";
 import ProjectSearch from "@/components/ProjectSearch";
-import { displayAward, filterProjects, listed, projects, studentLine, uniqueOptions } from "@/data/projects";
+import { displayAward, filterProjects, listed, projects as bundledProjects, studentLine, uniqueOptions } from "@/data/projects";
 import usePageTitle from "@/hooks/usePageTitle";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -44,7 +44,7 @@ function pageWindow(current, total) {
   return [...wanted].filter((page) => page >= 1 && page <= total).sort((a, b) => a - b);
 }
 
-export default function ProjectDatabase() {
+export default function ProjectDatabase({ projects = bundledProjects }) {
   usePageTitle("Project Database");
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("");
@@ -55,11 +55,11 @@ export default function ProjectDatabase() {
   const [sortKey, setSortKey] = useState("year");
   const [sortDir, setSortDir] = useState("asc");
 
-  const regions = useMemo(() => uniqueOptions(projects, (project) => listed(project.region, "Not listed")), []);
-  const categories = useMemo(() => uniqueOptions(projects, (project) => listed(project.category, "Not listed")), []);
+  const regions = useMemo(() => uniqueOptions(projects, (project) => listed(project.region, "Not listed")), [projects]);
+  const categories = useMemo(() => uniqueOptions(projects, (project) => listed(project.category, "Not listed")), [projects]);
   const awardOptions = useMemo(
     () => [...new Set(projects.flatMap((project) => project.awards.map(displayAward)))].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" })),
-    [],
+    [projects],
   );
 
   const rows = useMemo(() => {
@@ -70,7 +70,7 @@ export default function ProjectDatabase() {
       return compareValues(a, b, "title");
     });
     return filtered;
-  }, [award, category, query, region, sortDir, sortKey]);
+  }, [award, category, projects, query, region, sortDir, sortKey]);
 
   const pageCount = Math.max(1, Math.ceil(rows.length / pageSize));
   const currentPage = Math.min(page, pageCount);

@@ -7,7 +7,9 @@ const basePath = process.env.NEXT_BASE_PATH || "";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: "export",
+  // Static export (GitHub Pages) is enabled only by scripts/static-build.mjs.
+  // Plain `npm run dev` / `npm run build` keep the server features (Update Awards API).
+  ...(process.env.STATIC_EXPORT === "1" ? { output: "export" } : {}),
   trailingSlash: true,
   images: { unoptimized: true },
   outputFileTracingRoot: projectRoot,

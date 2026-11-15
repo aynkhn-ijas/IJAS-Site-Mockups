@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "next dev -H 127.0.0.1 -p 5176",
     "build": "next build",
-    "build:root": "NEXT_BASE_PATH= NEXT_PUBLIC_BASE_PATH= next build",
-    "build:mock": "NEXT_BASE_PATH=/IJAS-Site-Mockups NEXT_PUBLIC_BASE_PATH=/IJAS-Site-Mockups next build",
+    "build:root": "NEXT_BASE_PATH= NEXT_PUBLIC_BASE_PATH= node scripts/static-build.mjs",
+    "build:mock": "NEXT_BASE_PATH=/IJAS-Site-Mockups NEXT_PUBLIC_BASE_PATH=/IJAS-Site-Mockups node scripts/static-build.mjs",
     "start": "next start -H 127.0.0.1 -p 5176",
     "lint": "oxlint"
   },

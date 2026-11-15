@@ -1,22 +1,23 @@
+import { getLiveProject, loadProjects } from "@/lib/liveProjects";
 import ProjectProfile from "@/views/ProjectProfile";
-import { getProject, projects } from "@/data/projects";
 import { notFound } from "next/navigation";
 
-export function generateStaticParams() {
-  return projects.map((project) => ({ id: project.id }));
-}
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
-export const dynamicParams = false;
+export function generateStaticParams() {
+  return loadProjects().map((project) => ({ id: project.id }));
+}
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
-  const project = getProject(id);
+  const project = getLiveProject(id);
   return { title: project?.title || "Project" };
 }
 
 export default async function Page({ params }) {
   const { id } = await params;
-  const project = getProject(id);
+  const project = getLiveProject(id);
   if (!project) notFound();
   return <ProjectProfile project={project} />;
 }
