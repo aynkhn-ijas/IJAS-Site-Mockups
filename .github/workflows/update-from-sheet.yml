@@ -1,0 +1,88 @@
+name: Update from Google Sheet
+
+# Rebuilds the site from the public IJAS Google Sheet in GitHub's cloud.
+# Runs once a day, on every push to main, and on demand ("Run workflow" button).
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * *" # 08:00 UTC = 2 AM Chicago (CST)
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-from-sheet
+  cancel-in-progress: false
+
+env:
+  BUILD_SCRIPT: build:mock
+  # "clean" replaces the deployed files (keeps .nojekyll); "overlay" only adds/overwrites files.
+  DEPLOY_MODE: overlay
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Pull the Google Sheet into data/live-projects.json
+        id: sync
+        run: node scripts/sync-sheet.mjs
+
+      - name: Save updated sheet data to main
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/live-projects.json
+          git commit -m "Update awards data from Google Sheet [skip ci]"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && break
+            sleep 5
+          done
+
+      - name: Build static site
+        run: |
+          # Same source + data => same build id => identical files, so nothing is redeployed.
+          export NEXT_BUILD_ID="$(git ls-files -s | sha256sum | cut -c1-20)"
+          npm run "$BUILD_SCRIPT"
+          test -f out/index.html -o -f out/awards-by-value/index.html
+
+      - name: Check out gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages-deploy
+
+      - name: Deploy to gh-pages (only if something changed)
+        working-directory: gh-pages-deploy
+        run: |
+          if [ "$DEPLOY_MODE" = "clean" ]; then
+            find . -mindepth 1 -maxdepth 1 ! -name .git ! -name .nojekyll -exec rm -rf {} +
+          fi
+          cp -a ../out/. ./
+          touch .nojekyll
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Site unchanged; nothing to deploy."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Deploy site from Google Sheet (${{ steps.sync.outputs.count }} projects)"
+          git push origin HEAD:gh-pages
