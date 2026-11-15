@@ -1,7 +1,9 @@
 name: Update from Google Sheet
+run-name: "Update #${{ github.run_number }} (${{ github.event_name == 'workflow_dispatch' && 'manual' || github.event_name == 'schedule' && 'scheduled' || github.event_name }})"
 
 # Rebuilds the site from the public IJAS Google Sheet in GitHub's cloud.
 # Runs once a day, on every push to main, and on demand ("Run workflow" button).
+# The run list shows "Update #<number>"; each run's summary starts with links to the live site.
 on:
   workflow_dispatch:
   schedule:
@@ -20,12 +22,30 @@ env:
   BUILD_SCRIPT: build:mock
   # "clean" replaces the deployed files (keeps .nojekyll); "overlay" only adds/overwrites files.
   DEPLOY_MODE: overlay
+  AWARDS_URL: https://aynkhn-ijas.github.io/IJAS-Site-Mockups/awards-by-value/
+  PROJECTS_URL: https://aynkhn-ijas.github.io/IJAS-Site-Mockups/projects/
+  SITE_LINKS_NOTE: These pages go live once GitHub Pages is enabled for this repo.
 
 jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Link the live site in the run summary
+        if: always()
+        run: |
+          {
+            echo "# Update #${{ github.run_number }}"
+            echo
+            echo "- [Awards](${{ env.AWARDS_URL }})"
+            echo "- [Project database](${{ env.PROJECTS_URL }})"
+            if [ -n "$SITE_LINKS_NOTE" ]; then
+              echo
+              echo "_${SITE_LINKS_NOTE}_"
+            fi
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Check out main
         uses: actions/checkout@v4
         with:
