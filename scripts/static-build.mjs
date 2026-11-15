@@ -59,6 +59,10 @@ export default function Page() {
           </a>{" "}
           (tabs "Awards 2026" and "Projects Database").
         </p>
+        <p>
+          2026 projects appear on both tabs. You can edit either one: when the tabs disagree, the tab that was edited
+          most recently wins (Awards 2026 if both were edited). 2025 projects come from Projects Database.
+        </p>
 ${runUrl ? `        <p>
           Need it updated right away? Open{" "}
           <a className={linkClass} href="${runUrl}" target="_blank" rel="noreferrer">

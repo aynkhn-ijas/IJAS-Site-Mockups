@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { projects as bundledProjects } from "@/data/projects";
 import { adminPassword, passwordsMatch } from "@/lib/adminAuth";
 import { fetchAwardSheets, GoogleSheetsError } from "@/lib/googleSheets";
-import { saveLiveProjects } from "@/lib/liveProjects";
+import { loadSheetState, saveLiveProjects, saveSheetState } from "@/lib/liveProjects";
 import { importSheetValues, SheetImportError } from "@/lib/sheetImport";
 
 export const dynamic = "force-dynamic";
@@ -62,11 +62,13 @@ export async function POST(request) {
       awardsValues: sheets.awardsValues,
       projectsValues: sheets.projectsValues,
       archive: bundledProjects,
+      previousState: loadSheetState(),
     });
     saveLiveProjects(imported.projects, {
       sheetYears: imported.sheetYears,
       warnings: imported.warnings,
     });
+    saveSheetState(imported.state);
     revalidatePath("/projects");
     revalidatePath("/awards-by-value");
     revalidatePath("/projects/[id]", "page");

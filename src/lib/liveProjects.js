@@ -42,3 +42,25 @@ export function saveLiveProjects(projectList, meta = {}) {
   renameSync(temp, target);
   return payload;
 }
+
+// Fingerprints of both sheet tabs from the last update, used to tell which tab was edited.
+function statePath() {
+  return process.env.IJAS_SHEET_STATE_PATH || path.join(process.cwd(), "data", "sheet-state.json");
+}
+
+export function loadSheetState() {
+  try {
+    return JSON.parse(readFileSync(statePath(), "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+export function saveSheetState(state) {
+  if (!state) return;
+  const target = statePath();
+  mkdirSync(path.dirname(target), { recursive: true });
+  const temp = `${target}.${process.pid}.tmp`;
+  writeFileSync(temp, JSON.stringify(state));
+  renameSync(temp, target);
+}

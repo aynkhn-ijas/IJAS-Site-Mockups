@@ -35,22 +35,54 @@ function setOutput(name, value) {
 }
 
 const target = process.env.IJAS_LIVE_PROJECTS_PATH || path.join(root, "data", "live-projects.json");
+const stateTarget = process.env.IJAS_SHEET_STATE_PATH || path.join(root, "data", "sheet-state.json");
+
+function summary(text) {
+  console.log(text);
+  if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${text}\n`);
+}
+
+function readJson(file) {
+  try {
+    return JSON.parse(readFileSync(file, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function writeJsonAtomic(file, data) {
+  mkdirSync(path.dirname(file), { recursive: true });
+  const temp = `${file}.${process.pid}.tmp`;
+  writeFileSync(temp, JSON.stringify(data));
+  renameSync(temp, file);
+}
+
+const esc = (value) => String(value ?? "").replace(/\|/g, "\\|").replace(/\n/g, " ").slice(0, 120);
 
 try {
   const { fetchAwardSheets } = await import(pathToFileURL(path.join(root, "src/lib/googleSheets.js")).href);
   const { importSheetValues } = await import(pathToFileURL(path.join(root, "src/lib/sheetImport.js")).href);
   const { projects: bundledProjects } = await import(pathToFileURL(path.join(root, "src/data/projects.js")).href);
 
+  const previous = readJson(target);
+  const previousState = readJson(stateTarget);
+
   const sheets = await fetchAwardSheets();
   const imported = importSheetValues({
     awardsValues: sheets.awardsValues,
     projectsValues: sheets.projectsValues,
     archive: bundledProjects,
+    previousState,
   });
+
+  summary("## Google Sheet sync");
+  summary(
+    `- Rows read: **Awards 2026** ${Math.max(0, sheets.awardsValues.length - 1)} (${imported.rowCounts.awards} projects), **Projects Database** ${Math.max(0, sheets.projectsValues.length - 1)} (${imported.rowCounts.database} projects)`,
+  );
 
   if (!Array.isArray(imported.projects) || imported.sheetProjectCount < MIN_PROJECTS) {
     throw new Error(
-      `Only ${imported.sheetProjectCount ?? 0} projects came from the sheet (minimum ${MIN_PROJECTS}). Keeping the previous data.`,
+      `Only ${imported.sheetProjectCount ?? 0} projects came from the sheet (minimum ${MIN_PROJECTS}). Keeping the previous data and site.`,
     );
   }
 
@@ -61,26 +93,42 @@ try {
     projects: imported.projects,
   };
 
-  let previous = null;
-  try {
-    previous = JSON.parse(readFileSync(target, "utf8"));
-  } catch {}
+  // Which projects changed compared with the data currently on the site?
+  const before = new Map((previous?.projects || []).map((project) => [project.id, JSON.stringify(project)]));
+  const after = new Map(imported.projects.map((project) => [project.id, JSON.stringify(project)]));
+  const added = [...after.keys()].filter((id) => !before.has(id));
+  const removed = [...before.keys()].filter((id) => !after.has(id));
+  const edited = [...after.keys()].filter((id) => before.has(id) && before.get(id) !== after.get(id));
+
   const strip = (data) => (data ? JSON.stringify({ ...data, updatedAt: undefined }) : "");
   const changed = strip(previous) !== strip(content);
+  const stateChanged = JSON.stringify(previousState) !== JSON.stringify(imported.state);
 
-  if (changed) {
-    mkdirSync(path.dirname(target), { recursive: true });
-    const temp = `${target}.${process.pid}.tmp`;
-    writeFileSync(temp, JSON.stringify({ updatedAt: new Date().toISOString(), ...content }));
-    renameSync(temp, target);
+  if (changed) writeJsonAtomic(target, { updatedAt: new Date().toISOString(), ...content });
+  if (stateChanged) writeJsonAtomic(stateTarget, imported.state);
+
+  summary(`- Projects published: **${imported.projects.length}** (${imported.sheetProjectCount} from the sheet)`);
+  summary(`- Changed vs. live data: **${edited.length} edited, ${added.length} added, ${removed.length} removed**`);
+  const titleOf = (id) => imported.projects.find((project) => project.id === id)?.title || id;
+  for (const id of edited.slice(0, 30)) summary(`  - edited: ${esc(titleOf(id))} (\`${id}\`)`);
+  for (const id of added.slice(0, 30)) summary(`  - added: ${esc(titleOf(id))} (\`${id}\`)`);
+  for (const id of removed.slice(0, 30)) summary(`  - removed: \`${id}\``);
+  if (imported.conflicts.length) {
+    summary(`\n**Tabs disagree on ${imported.conflicts.length} value(s)** (the tab edited most recently wins; Awards 2026 if unsure):\n`);
+    summary("| Project | Field | Awards 2026 | Projects Database | Used |\n|---|---|---|---|---|");
+    for (const c of imported.conflicts.slice(0, 40)) {
+      summary(`| ${esc(c.project)} | ${c.field} | ${esc(c.awards2026)} | ${esc(c.projectsDatabase)} | ${c.used} |`);
+    }
   }
-  console.log(
-    `Sheet sync OK: ${imported.sheetProjectCount} sheet projects, ${imported.projects.length} total. ${changed ? "Data changed." : "No change."}`,
-  );
-  if (imported.warningCount) console.log(`${imported.warningCount} warning(s); first ones:\n- ${imported.warnings.join("\n- ")}`);
-  setOutput("changed", changed ? "true" : "false");
+  if (imported.warningCount) {
+    summary(`\n<details><summary>${imported.warningCount} sheet warning(s)</summary>\n\n- ${imported.warnings.map(esc).join("\n- ")}\n\n</details>`);
+  }
+  summary(`- Data file: ${changed ? "**updated**" : "unchanged"}`);
+
+  setOutput("changed", changed || stateChanged ? "true" : "false");
   setOutput("count", imported.projects.length);
 } catch (error) {
+  summary(`\n**Sheet sync failed:** ${error.message}\nThe live site was not changed.`);
   console.error(`::error::Sheet sync failed: ${error.message}`);
   if (error.details?.length) console.error(error.details.join("\n"));
   process.exit(1);

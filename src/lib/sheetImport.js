@@ -384,6 +384,124 @@ function mergeAward(project, award) {
   if (award.awardRecipient === "yes" || project.awardRecipient === "yes") project.awardRecipient = "yes";
 }
 
+// ---------------------------------------------------------------------------
+// Two tabs, one project: which value wins?
+//
+// 2026 projects appear on BOTH "Awards 2026" and "Projects Database". For each field
+// (title, students, school, region, category, project type, awards):
+//   1. If the tabs agree, or one is blank, the non-blank value is used.
+//   2. If they disagree, the tab that was EDITED since the last update wins. Fingerprints of
+//      both tabs are saved after every update (data/sheet-state.json), so an edit in either tab
+//      shows up on the site.
+//   3. If both tabs changed, or there is no saved state yet, "Awards 2026" wins.
+//   4. If neither tab changed, the side picked last time is kept (no flip-flopping).
+// Projects that are only on one tab (e.g. 2025 projects on Projects Database) use that tab.
+// ---------------------------------------------------------------------------
+
+function fingerprint(value) {
+  let hash = 0x811c9dc5;
+  const text = String(value ?? "");
+  for (let index = 0; index < text.length; index += 1) {
+    hash ^= text.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return hash.toString(36);
+}
+
+function compareText(value) {
+  return clean(value).toLowerCase();
+}
+
+function awardsCompareKey(row) {
+  const norm = (name) => clean(name).toLowerCase().replace(/[^a-z0-9]/g, "");
+  const medal = norm(row.finalAward);
+  const list = (row.awards || []).map(norm).filter(Boolean).sort();
+  return [medal, ...list].join("|");
+}
+
+const RECONCILED_FIELDS = {
+  title: { compare: (row) => compareText(row.title) },
+  students: { compare: (row) => nameKey(row.students || []) },
+  school: { compare: (row) => compareText(row.school) },
+  region: { compare: (row) => compareText(row.region) },
+  category: { compare: (row) => compareText(row.category) },
+  projectType: { compare: (row) => compareText(row.projectType) },
+  awards: { compare: (row) => (row.finalAward || (row.awards || []).length ? awardsCompareKey(row) : "") },
+};
+
+function stateKey(row) {
+  if (row.ijasNumber && row.projectNumber) return `${row.year}:${row.ijasNumber}:${row.projectNumber}`;
+  return `${row.year}:${normalizeHeader(row.title)}:${nameKey(row.students || [])}`;
+}
+
+function applyField(project, field, source, other) {
+  if (field === "awards") {
+    project.finalAward = source.finalAward;
+    project.awards = unionAwards([[placementAward(source.finalAward)], source.awards]);
+    project.dropped = source.dropped;
+    return;
+  }
+  if (field === "students") {
+    // Keep grades from the other tab when the chosen tab has the same student without a grade.
+    const grades = new Map((other.students || []).map((s) => [normalizeHeader(s.name).replace(/[^a-z0-9]/g, ""), s.grade]));
+    project.students = (source.students || []).map((s) => ({
+      ...s,
+      grade: s.grade || grades.get(normalizeHeader(s.name).replace(/[^a-z0-9]/g, "")) || "",
+    }));
+    return;
+  }
+  project[field] = source[field];
+}
+
+function reconcileTabs(project, award, previousState, state, conflicts) {
+  const database = {
+    title: project.title,
+    students: project.students,
+    school: project.school,
+    region: project.region,
+    category: project.category,
+    projectType: project.projectType,
+    awards: project.awards,
+    finalAward: project.finalAward,
+    dropped: project.dropped,
+  };
+  mergeAward(project, award); // fills ids, abstract, recipient flag and any blanks
+  const key = stateKey(project);
+  const previous = previousState?.projects?.[key] || null;
+  const saved = {};
+  for (const [field, { compare }] of Object.entries(RECONCILED_FIELDS)) {
+    const a = compare(award);
+    const d = compare(database);
+    const fa = fingerprint(a);
+    const fd = fingerprint(d);
+    if (a === d || !a || !d) {
+      // No conflict: mergeAward already used the shared / non-blank value (same as before).
+      saved[field] = [fa, fd, previous?.[field]?.[2] || "a"];
+      continue;
+    }
+    let side;
+    {
+      const before = previous?.[field];
+      const aChanged = !before || before[0] !== fa;
+      const dChanged = !before || before[1] !== fd;
+      if (before && dChanged && !aChanged) side = "d";
+      else if (before && aChanged && !dChanged) side = "a";
+      else if (before && !aChanged && !dChanged) side = before[2] || "a";
+      else side = "a";
+      conflicts.push({
+        project: key,
+        field,
+        used: side === "a" ? "Awards 2026" : "Projects Database",
+        awards2026: field === "awards" ? award.awards.join(" | ") : clean(field === "students" ? award.students.map((s) => s.name).join(", ") : award[field]),
+        projectsDatabase: field === "awards" ? (database.awards || []).join(" | ") : clean(field === "students" ? (database.students || []).map((s) => s.name).join(", ") : database[field]),
+      });
+    }
+    applyField(project, field, side === "a" ? award : database, side === "a" ? database : award);
+    saved[field] = [fa, fd, side];
+  }
+  state[key] = saved;
+}
+
 function dedupeKey(row) {
   return [row.year, normalizeHeader(row.title), nameKey(row.students), row.ijasNumber, row.projectNumber].join("|");
 }
@@ -411,16 +529,18 @@ export function mergeWithArchive(sheetProjects, archive, sheetYears) {
   return [...sheetProjects, ...kept];
 }
 
-export function importSheetValues({ awardsValues, projectsValues, archive = [] }) {
+export function importSheetValues({ awardsValues, projectsValues, archive = [], previousState = null }) {
   const awards = parseTab(awardsValues, { tab: "Awards 2026", defaultYear: 2026 });
   const database = parseTab(projectsValues, { tab: "Projects Database", defaultYear: 2026 });
   const warnings = [...database.warnings, ...awards.warnings];
   const projects = dedupeProjects(database.rows, warnings);
   const index = uniqueIndex(projects);
   const unmatched = [];
+  const state = {};
+  const conflicts = [];
   for (const award of awards.rows) {
     const match = findMatch(award, index);
-    if (match) mergeAward(match, award);
+    if (match) reconcileTabs(match, award, previousState, state, conflicts);
     else unmatched.push(award);
   }
   const extras = dedupeProjects(unmatched, warnings).filter((row) => !row.dropped);
@@ -446,5 +566,10 @@ export function importSheetValues({ awardsValues, projectsValues, archive = [] }
     warnings: warnings.slice(0, 25),
     warningCount: warnings.length,
     sheetProjectCount: finalized.length,
+    // Per-project fingerprints of both tabs, saved between updates so the next update can tell
+    // which tab was edited (see reconcileTabs).
+    state: { version: 1, projects: state },
+    conflicts,
+    rowCounts: { awards: awards.rows.length, database: database.rows.length },
   };
 }
