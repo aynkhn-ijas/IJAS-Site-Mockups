@@ -1,6 +1,6 @@
 "use client";
 
-import PageHero from "@/components/PageHero";
+import Hero from "@/components/Hero";
 import ProjectSearch from "@/components/ProjectSearch";
 import { displayAward, filterProjects, listed, projects as bundledProjects, studentLine, uniqueOptions } from "@/data/projects";
 import usePageTitle from "@/hooks/usePageTitle";
@@ -123,7 +123,7 @@ export default function ProjectDatabase({ projects = bundledProjects }) {
           .project-db-rows { animation: none; }
         }
       `}</style>
-      <PageHero title="Project Database" />
+      <Hero year={2026} title="Project Database" />
       <div className="mx-auto max-w-[1560px] px-4 py-8 md:px-8 md:py-10">
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <label className="flex items-center gap-2 text-[15px] text-ijas-ink">

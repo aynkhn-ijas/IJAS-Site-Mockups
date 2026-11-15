@@ -1,6 +1,6 @@
 "use client";
 
-import PageHero from "@/components/PageHero";
+import Hero from "@/components/Hero";
 import YearTabs from "@/components/YearTabs";
 import { listed, presenterLine, projects as bundledProjects, studentLine } from "@/data/projects";
 import usePageTitle from "@/hooks/usePageTitle";
@@ -45,7 +45,7 @@ export default function AwardsByValue({ projects = bundledProjects }) {
 
   return (
     <>
-      <PageHero title="Awards" />
+      <Hero year={year} title="Awards" />
       <YearTabs year={year} onChange={setYear} controlsId="awards-by-value" />
       <div id="awards-by-value" className="mx-auto max-w-[1100px] px-5 py-10 md:px-8 md:py-12">
         <p className="max-w-[760px] text-[16px] leading-relaxed text-[#374151]">
