@@ -10,6 +10,8 @@ const nextConfig = {
   // Static export (GitHub Pages) is enabled only by scripts/static-build.mjs.
   // Plain `npm run dev` / `npm run build` keep the server features (Update Awards API).
   ...(process.env.STATIC_EXPORT === "1" ? { output: "export" } : {}),
+  // Stable build id so an unchanged site produces an identical export (no empty deploys).
+  generateBuildId: async () => process.env.NEXT_BUILD_ID || null,
   trailingSlash: true,
   images: { unoptimized: true },
   outputFileTracingRoot: projectRoot,
