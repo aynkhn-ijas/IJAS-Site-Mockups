@@ -1,19 +1,19 @@
 1:"$Sreact.fragment"
-2:I[8938,["2619","static/chunks/2619-3c9e02e22d10480a.js","7177","static/chunks/app/layout-b0bafd43b7bd09ce.js"],"default"]
-3:I[9766,[],""]
-4:I[8924,[],""]
-5:I[384,["2619","static/chunks/2619-3c9e02e22d10480a.js","4345","static/chunks/app/not-found-01e53a48c7b009b4.js"],"default"]
-6:I[8198,["7968","static/chunks/app/isef/page-d3d40e2d9ebca7ce.js"],"default"]
-7:I[4431,[],"OutletBoundary"]
-9:I[5278,[],"AsyncMetadataOutlet"]
-b:I[4431,[],"ViewportBoundary"]
-d:I[4431,[],"MetadataBoundary"]
+2:I[8449,["546","static/chunks/546-8854389bf334b0a6.js","7177","static/chunks/app/layout-d98ed8ec565e4255.js"],"default"]
+3:I[7627,[],""]
+4:I[9463,[],""]
+5:I[284,["546","static/chunks/546-8854389bf334b0a6.js","4345","static/chunks/app/not-found-79d14efb3c605258.js"],"default"]
+6:I[6506,["7968","static/chunks/app/isef/page-e9132321b561d81f.js"],"default"]
+7:I[3970,[],"OutletBoundary"]
+9:I[4087,[],"AsyncMetadataOutlet"]
+b:I[3970,[],"ViewportBoundary"]
+d:I[3970,[],"MetadataBoundary"]
 e:"$Sreact.suspense"
-10:I[7150,[],""]
-:HL["/IJAS-Site-Mockups/_next/static/css/28d97189cec195b4.css","style"]
-0:{"P":null,"b":"MTcqoenrFqA89m2oNOJfo","p":"/IJAS-Site-Mockups","c":["","isef",""],"i":false,"f":[[["",{"children":["isef",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/IJAS-Site-Mockups/_next/static/css/28d97189cec195b4.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":""}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500;600;700;800&display=swap","rel":"stylesheet"}]]}],["$","body",null,{"children":["$","$L2",null,{"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","$L5",null,{}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]]}],{"children":["isef",["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$L6",null,{"to":"/competition/isef"}],null,["$","$L7",null,{"children":["$L8",["$","$L9",null,{"promise":"$@a"}]]}]]}],{},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$Lb",null,{"children":"$Lc"}],null],["$","$Ld",null,{"children":["$","div",null,{"hidden":true,"children":["$","$e",null,{"fallback":null,"children":"$Lf"}]}]}]]}],false]],"m":"$undefined","G":["$10",[]],"s":false,"S":true}
+10:I[5649,[],""]
+:HL["/IJAS-Site-Mockups/_next/static/css/3ca0e4bfcedc3a9b.css","style"]
+0:{"P":null,"b":"yeSspckcOPVCFrF2ZArti","p":"/IJAS-Site-Mockups","c":["","isef",""],"i":false,"f":[[["",{"children":["isef",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/IJAS-Site-Mockups/_next/static/css/3ca0e4bfcedc3a9b.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":""}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500;600;700;800&display=swap","rel":"stylesheet"}]]}],["$","body",null,{"children":["$","$L2",null,{"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","$L5",null,{}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]]}],{"children":["isef",["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$L6",null,{"to":"/competition/isef"}],null,["$","$L7",null,{"children":["$L8",["$","$L9",null,{"promise":"$@a"}]]}]]}],{},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$Lb",null,{"children":"$Lc"}],null],["$","$Ld",null,{"children":["$","div",null,{"hidden":true,"children":["$","$e",null,{"fallback":null,"children":"$Lf"}]}]}]]}],false]],"m":"$undefined","G":["$10",[]],"s":false,"S":true}
 c:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
 8:null
-11:I[622,[],"IconMark"]
+11:I[1543,[],"IconMark"]
 a:{"metadata":[["$","title","0",{"children":"Illinois Junior Academy of Science"}],["$","meta","1",{"name":"description","content":"Illinois Junior Academy of Science — statewide science expositions, membership, and State Exposition awards."}],["$","link","2",{"rel":"icon","href":"/ijas-seal.png"}],["$","$L11","3",{}]],"error":null,"digest":"$undefined"}
 f:"$a:metadata"
