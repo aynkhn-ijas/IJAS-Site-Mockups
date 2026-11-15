@@ -4,6 +4,8 @@ import PageHero from "@/components/PageHero";
 import ProjectSearch from "@/components/ProjectSearch";
 import { displayAward, filterProjects, listed, projects as bundledProjects, studentLine, uniqueOptions } from "@/data/projects";
 import usePageTitle from "@/hooks/usePageTitle";
+import useSmartSearch from "@/hooks/useSmartSearch";
+import { orderBySmartSearch } from "@/lib/smartSearch";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -54,6 +56,7 @@ export default function ProjectDatabase({ projects = bundledProjects }) {
   const [page, setPage] = useState(1);
   const [sortKey, setSortKey] = useState("year");
   const [sortDir, setSortDir] = useState("asc");
+  const { scores, loading } = useSmartSearch(query);
 
   const regions = useMemo(() => uniqueOptions(projects, (project) => listed(project.region, "Not listed")), [projects]);
   const categories = useMemo(() => uniqueOptions(projects, (project) => listed(project.category, "Not listed")), [projects]);
@@ -63,14 +66,20 @@ export default function ProjectDatabase({ projects = bundledProjects }) {
   );
 
   const rows = useMemo(() => {
-    const filtered = filterProjects(projects, { query, region, category, award }).map(rowModel);
-    filtered.sort((a, b) => {
-      const base = compareValues(a, b, sortKey);
-      if (base !== 0) return sortDir === "asc" ? base : -base;
-      return compareValues(a, b, "title");
-    });
-    return filtered;
-  }, [award, category, projects, query, region, sortDir, sortKey]);
+    const sortRows = (list) => {
+      list.sort((a, b) => {
+        const base = compareValues(a, b, sortKey);
+        if (base !== 0) return sortDir === "asc" ? base : -base;
+        return compareValues(a, b, "title");
+      });
+      return list;
+    };
+    const narrowed = filterProjects(projects, { region, category, award });
+    const needle = query.trim();
+    if (!needle) return sortRows(narrowed.map(rowModel));
+    if (!scores) return sortRows(filterProjects(narrowed, { query }).map(rowModel));
+    return orderBySmartSearch(narrowed, needle, scores, { includeAbstract: true }).map(rowModel);
+  }, [award, category, projects, query, region, scores, sortDir, sortKey]);
 
   const pageCount = Math.max(1, Math.ceil(rows.length / pageSize));
   const currentPage = Math.min(page, pageCount);
@@ -164,6 +173,7 @@ export default function ProjectDatabase({ projects = bundledProjects }) {
           awards={awardOptions}
           onClear={clearFilters}
           active={active}
+          loading={loading}
         />
         <p className="mt-3 text-[13px] text-ijas-muted" aria-live="polite">
           {active ? `${rows.length} matching ${rows.length === 1 ? "project" : "projects"}` : `${projects.length} projects`}

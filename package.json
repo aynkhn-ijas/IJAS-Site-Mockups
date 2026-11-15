@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "embeddings": "node scripts/build-embeddings.mjs",
+    "predev": "node scripts/build-embeddings.mjs",
+    "prebuild": "node scripts/build-embeddings.mjs",
     "dev": "next dev -H 127.0.0.1 -p 5176",
     "build": "next build",
     "build:root": "NEXT_BASE_PATH= NEXT_PUBLIC_BASE_PATH= node scripts/static-build.mjs",
@@ -12,6 +15,7 @@
     "lint": "oxlint"
   },
   "dependencies": {
+    "@huggingface/transformers": "^4.3.2",
     "clsx": "^2.1.1",
     "motion": "^14.5.0",
     "next": "^15.5.4",

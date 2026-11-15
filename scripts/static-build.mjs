@@ -3,6 +3,7 @@
 //  - app/api is removed (route handlers can't be exported),
 //  - the admin page is replaced with a static page explaining the daily Google Sheet sync,
 //  - force-dynamic pages become force-static, so data/live-projects.json is baked in at build time.
+// The smart search index (public/search) is rebuilt first so it always matches the baked-in data.
 // The export is copied to ./out.
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync, statSync } from "node:fs";
 import path from "node:path";
@@ -12,6 +13,10 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const stage = path.join(root, ".static-build");
 const skip = new Set(["node_modules", ".next", "out", ".static-build", ".git"]);
+
+// Smart search: (re)build public/search/{index.json,embeddings.bin} from data/live-projects.json.
+// Unchanged projects come from data/embedding-cache.json, so the model only loads when text changed.
+execSync(`"${process.execPath}" scripts/build-embeddings.mjs`, { cwd: root, stdio: "inherit" });
 
 rmSync(stage, { recursive: true, force: true });
 mkdirSync(stage);

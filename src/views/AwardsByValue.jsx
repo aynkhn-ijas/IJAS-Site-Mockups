@@ -4,7 +4,9 @@ import PageHero from "@/components/PageHero";
 import YearTabs from "@/components/YearTabs";
 import { listed, presenterLine, projects as bundledProjects, studentLine } from "@/data/projects";
 import usePageTitle from "@/hooks/usePageTitle";
+import useSmartSearch from "@/hooks/useSmartSearch";
 import { buildAwardSections, headingValue } from "@/lib/awardValue";
+import { orderBySmartSearch } from "@/lib/smartSearch";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -20,21 +22,26 @@ function matchesQuery(project, awardName, query) {
 export default function AwardsByValue({ projects = bundledProjects }) {
   const [year, setYear] = useState(2026);
   const [query, setQuery] = useState("");
+  const { scores, loading } = useSmartSearch(query);
   usePageTitle("Awards");
   const sections = useMemo(
     () => buildAwardSections(projects.filter((project) => project.year === Number(year))),
     [projects, year],
   );
-  const visible = useMemo(
-    () =>
-      sections
-        .map((section) => ({
-          ...section,
-          projects: section.projects.filter((project) => matchesQuery(project, section.name, query)),
-        }))
-        .filter((section) => section.projects.length > 0),
-    [sections, query],
-  );
+  const visible = useMemo(() => {
+    const needle = query.trim();
+    return sections
+      .map((section) => {
+        let sectionProjects = section.projects;
+        if (needle && scores) {
+          sectionProjects = orderBySmartSearch(section.projects, needle, scores, { awardName: section.name });
+        } else if (needle) {
+          sectionProjects = section.projects.filter((project) => matchesQuery(project, section.name, needle));
+        }
+        return { ...section, projects: sectionProjects };
+      })
+      .filter((section) => section.projects.length > 0);
+  }, [sections, query, scores]);
 
   return (
     <>
@@ -55,6 +62,11 @@ export default function AwardsByValue({ projects = bundledProjects }) {
             placeholder="Award, title, student, category, school, or region"
             className="mt-1 w-full rounded-md border border-[#d1d5db] bg-white px-3 py-2 text-[15px] font-normal text-ijas-ink"
           />
+          {loading ? (
+            <span className="mt-1 block text-[12px] font-normal text-ijas-muted" role="status">
+              Smart search loading…
+            </span>
+          ) : null}
         </label>
         <div className="space-y-10">
           {visible.length === 0 ? (

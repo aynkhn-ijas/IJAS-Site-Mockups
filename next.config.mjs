@@ -15,6 +15,25 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   outputFileTracingRoot: projectRoot,
+  // Smart search: transformers.js runs in Node for the build-time index and in the browser for queries.
+  serverExternalPackages: ["@huggingface/transformers", "onnxruntime-node", "sharp"],
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "@huggingface/transformers": path.join(projectRoot, "node_modules/@huggingface/transformers/dist/transformers.web.js"),
+        "onnxruntime-node": false,
+        sharp: false,
+      };
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        crypto: false,
+      };
+    }
+    return config;
+  },
   ...(basePath
     ? {
         basePath,

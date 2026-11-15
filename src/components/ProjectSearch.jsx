@@ -33,6 +33,7 @@ export default function ProjectSearch({
   awards,
   onClear,
   active,
+  loading = false,
 }) {
   return (
     <div className="mt-4">
@@ -59,6 +60,11 @@ export default function ProjectSearch({
           </button>
         ) : null}
       </div>
+      {loading ? (
+        <p className="mt-1 text-[12px] font-normal text-ijas-muted" role="status">
+          Smart search loading…
+        </p>
+      ) : null}
       <div className="mt-3 flex flex-col gap-3 sm:flex-row">
         <SelectFilter id={`${idPrefix}-region`} label="Region" value={region} options={regions} onChange={onRegion} />
         <SelectFilter id={`${idPrefix}-category`} label="Category" value={category} options={categories} onChange={onCategory} />
