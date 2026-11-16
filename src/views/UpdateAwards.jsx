@@ -42,8 +42,8 @@ export default function UpdateAwards() {
           Database pages.
         </p>
         <p className="mt-3 text-[15px] leading-relaxed text-[#374151]">
-          Put each award on its own line, or separate awards with semicolons or vertical bars. Silver, bronze,
-          canceled, and no-show rows are left off the site.
+          Put each award on its own line, or separate awards with semicolons or vertical bars. Canceled and
+          no-show rows without another award are left off the site. Every other project is included.
         </p>
         <p className="mt-3 text-[15px]">
           <a

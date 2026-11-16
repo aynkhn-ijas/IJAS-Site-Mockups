@@ -1,4 +1,4 @@
-import { displayAward, studentLine } from "../data/projects.js";
+import { studentLine, visibleAwards } from "../data/projects.js";
 import { asset } from "./asset.js";
 import { INT8_SCALE, SEARCH_DTYPE, SEMANTIC_MARGIN, SEMANTIC_THRESHOLD, TRANSFORMERS_BROWSER_URL } from "./searchConfig.js";
 
@@ -28,7 +28,7 @@ export function textHasQuery(text, needle) {
 
 export function keywordBoost(project, needle, awardName = "") {
   if (!needle) return 0;
-  const awards = [...(project.awards || []), ...(project.awards || []).map(displayAward), awardName].join("\n");
+  const awards = [...visibleAwards(project.awards), awardName].join("\n");
   let boost = 0;
   if (textHasQuery(project.title, needle)) boost = Math.max(boost, TITLE_BOOST);
   if (textHasQuery(studentLine(project), needle)) boost = Math.max(boost, NAME_BOOST);

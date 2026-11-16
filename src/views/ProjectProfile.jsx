@@ -1,7 +1,7 @@
 "use client";
 
 import PageHero from "@/components/PageHero";
-import { displayAward, presenterLine } from "@/data/projects";
+import { displayAward, presenterLine, visibleAwards } from "@/data/projects";
 import usePageTitle from "@/hooks/usePageTitle";
 import { awardBand } from "@/lib/awardValue";
 import Link from "next/link";
@@ -32,7 +32,7 @@ function awardRank(name) {
 }
 
 function orderedAwards(awards) {
-  return awards
+  return visibleAwards(awards)
     .map(formatAward)
     .filter(Boolean)
     .map((name, index) => ({ name, index, ...awardRank(name) }))

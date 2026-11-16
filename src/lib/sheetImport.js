@@ -1,4 +1,4 @@
-import { finalizeProjectRows, isDroppedAward } from "../data/projects.js";
+import { finalizeProjectRows, isDroppedAward, isHiddenAwardLabel, rowInclusion } from "../data/projects.js";
 
 export class SheetImportError extends Error {
   constructor(message, details = []) {
@@ -194,7 +194,7 @@ function unionAwards(lists) {
     for (const name of list || []) {
       const cleaned = clean(name);
       const key = cleaned.toLowerCase();
-      if (!cleaned || seen.has(key) || isDroppedAward(cleaned)) continue;
+      if (!cleaned || seen.has(key) || isDroppedAward(cleaned) || isHiddenAwardLabel(cleaned)) continue;
       seen.add(key);
       awards.push(cleaned);
     }
@@ -253,9 +253,9 @@ function parseTab(values, { tab, defaultYear }) {
       ...splitAwards(cell(source, fields.awards)),
       ...extraAwards.flatMap((column) => splitAwards(cell(source, column))),
     ].filter((name) => !PLACEHOLDER_AWARDS.has(name.toUpperCase()));
-    // The Projects Database tab has no Final Award column. Its medal (Gold, Silver, Cancel, ...)
-    // is listed inside "Awards Won", so lift it out so Silver/Bronze/Cancel rows are handled
-    // the same way as the built-in records.
+    // The Projects Database tab has no Final Award column. Its medal is listed inside
+    // "Awards Won", so lift it out. Silver and Bronze stay in the database with the label removed.
+    // Canceled and no-show rows stay only when another award remains.
     if (!finalAward) {
       const medalIndex = specials.findIndex((name) => PLACEMENTS.has(name.toUpperCase()));
       if (medalIndex >= 0) {
@@ -265,7 +265,7 @@ function parseTab(values, { tab, defaultYear }) {
     }
     const awards = unionAwards([[placementAward(finalAward)], specials]);
     const title = clean(cell(source, fields.title));
-    const dropped = isDroppedAward(finalAward) || (!finalAward && specials.length > 0 && awards.length === 0);
+    const inclusion = rowInclusion(finalAward, awards);
     if (!title || students.length === 0) {
       warnings.push(
         `${tab} row ${sheetRow} was skipped because it ${!title ? "has no project title" : "has no finalist names"}.`,
@@ -284,10 +284,11 @@ function parseTab(values, { tab, defaultYear }) {
       region: normalizeRegion(cell(source, fields.region)),
       category: clean(cell(source, fields.category)),
       projectType: clean(cell(source, fields.projectType)),
-      awards,
+      awards: inclusion.awards,
       awardRecipient: recipient === "yes" ? "yes" : "",
       finalAward,
-      dropped,
+      dropped: inclusion.dropped,
+      newlyIncluded: inclusion.newlyIncluded,
       sheetRow,
       tab,
     });
@@ -368,8 +369,10 @@ function mergeAward(project, award) {
   if (awardHasAwards) {
     const placement = award.finalAward || project.finalAward;
     project.finalAward = placement;
-    project.awards = unionAwards([award.awards, [placementAward(placement)]]);
-    project.dropped = isDroppedAward(placement) || (!award.finalAward && award.dropped);
+    const inclusion = rowInclusion(placement, unionAwards([award.awards, [placementAward(placement)]]));
+    project.awards = inclusion.awards;
+    project.dropped = inclusion.dropped;
+    project.newlyIncluded = inclusion.newlyIncluded;
   }
   project.students = preferStudents(project.students, award.students);
   project.title = project.title || award.title;
@@ -437,8 +440,10 @@ function stateKey(row) {
 function applyField(project, field, source, other) {
   if (field === "awards") {
     project.finalAward = source.finalAward;
-    project.awards = unionAwards([[placementAward(source.finalAward)], source.awards]);
-    project.dropped = source.dropped;
+    const inclusion = rowInclusion(source.finalAward, unionAwards([[placementAward(source.finalAward)], source.awards]));
+    project.awards = inclusion.awards;
+    project.dropped = inclusion.dropped;
+    project.newlyIncluded = inclusion.newlyIncluded;
     return;
   }
   if (field === "students") {
@@ -555,7 +560,7 @@ export function importSheetValues({ awardsValues, projectsValues, archive = [], 
   const finalized = finalizeProjectRows(projects);
   if (finalized.length === 0) {
     throw new SheetImportError(
-      "No projects left after checking the sheet. Silver, bronze, canceled, no-show, and blank rows are skipped.",
+      "No projects left after checking the sheet. Canceled, no-show, and blank rows are skipped.",
       warnings.slice(0, 25),
     );
   }

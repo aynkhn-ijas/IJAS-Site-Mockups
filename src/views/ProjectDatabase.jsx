@@ -2,7 +2,7 @@
 
 import Hero from "@/components/Hero";
 import ProjectSearch from "@/components/ProjectSearch";
-import { displayAward, filterProjects, listed, projects as bundledProjects, studentLine, uniqueOptions } from "@/data/projects";
+import { filterProjects, listed, projects as bundledProjects, studentLine, uniqueOptions, visibleAwards } from "@/data/projects";
 import usePageTitle from "@/hooks/usePageTitle";
 import useSmartSearch from "@/hooks/useSmartSearch";
 import { orderBySmartSearch } from "@/lib/smartSearch";
@@ -24,6 +24,7 @@ const CELL = "px-5 py-5 align-top leading-relaxed";
 const WIDE_CELL = "px-6 py-5 align-top leading-relaxed";
 
 function rowModel(project) {
+  const awardsList = visibleAwards(project.awards);
   return {
     project,
     year: project.year,
@@ -32,7 +33,8 @@ function rowModel(project) {
     category: project.category,
     region: project.region,
     school: project.school,
-    awards: project.awards.map(displayAward).join("\n"),
+    awards: awardsList.join("\n"),
+    awardsList,
   };
 }
 
@@ -61,7 +63,7 @@ export default function ProjectDatabase({ projects = bundledProjects }) {
   const regions = useMemo(() => uniqueOptions(projects, (project) => listed(project.region, "Not listed")), [projects]);
   const categories = useMemo(() => uniqueOptions(projects, (project) => listed(project.category, "Not listed")), [projects]);
   const awardOptions = useMemo(
-    () => [...new Set(projects.flatMap((project) => project.awards.map(displayAward)))].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" })),
+    () => [...new Set(projects.flatMap((project) => visibleAwards(project.awards)))].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" })),
     [projects],
   );
 
@@ -238,11 +240,13 @@ export default function ProjectDatabase({ projects = bundledProjects }) {
                     <td className={CELL}>{row.region || "Not listed"}</td>
                     <td className={CELL}>{row.school || "Not listed"}</td>
                     <td className={WIDE_CELL}>
-                      <ul className="flex list-none flex-col gap-1">
-                        {row.project.awards.map((item) => (
-                          <li key={item}>{displayAward(item)}</li>
-                        ))}
-                      </ul>
+                      {row.awardsList.length ? (
+                        <ul className="flex list-none flex-col gap-1">
+                          {row.awardsList.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : null}
                     </td>
                   </tr>
                 ))

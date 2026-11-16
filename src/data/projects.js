@@ -2,7 +2,8 @@ import { abstractsById } from "./abstracts";
 import { awards2025 } from "./awards2025";
 import projects2026 from "./projects2026.json";
 
-const DROPPED_AWARDS = new Set(["SILVER", "BRONZE", "CANCEL", "NOSHOW", "CANCELED", "NO SHOW", "NO-SHOW"]);
+const DROPPED_AWARDS = new Set(["CANCEL", "NOSHOW", "CANCELED", "NO SHOW", "NO-SHOW"]);
+const HIDDEN_AWARD_LABELS = new Set(["SILVER", "BRONZE", "SILVER AWARD", "BRONZE AWARD", "NONE", "N/A", "NA", "NO AWARD", "NO AWARDS", "—", "-"]);
 
 function clean(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
@@ -30,13 +31,47 @@ function awardList(finalAward, specials) {
   if (placement === "PARTICIPATION") awards.push("Participation");
   for (const name of specials || []) {
     const cleaned = clean(name);
-    if (cleaned && !awards.includes(cleaned)) awards.push(cleaned);
+    if (cleaned && !isHiddenAwardLabel(cleaned) && !awards.includes(cleaned)) awards.push(cleaned);
   }
   return awards;
 }
 
 export function isDroppedAward(value) {
   return DROPPED_AWARDS.has(medal(value));
+}
+
+export function isHiddenAwardLabel(value) {
+  return HIDDEN_AWARD_LABELS.has(medal(value));
+}
+
+/** Awards shown in the database, profiles, and the award filter. Silver and Bronze are never included. */
+export function visibleAwards(awards) {
+  const seen = new Set();
+  const list = [];
+  for (const award of awards || []) {
+    const name = displayAward(award);
+    if (!name || isHiddenAwardLabel(name)) continue;
+    const key = name.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    list.push(name);
+  }
+  return list;
+}
+
+function legacyMedal(value) {
+  const name = medal(value);
+  return name === "SILVER" || name === "BRONZE" || DROPPED_AWARDS.has(name);
+}
+
+export function rowInclusion(finalAward, awards) {
+  const shown = visibleAwards(awards);
+  const dropped = isDroppedAward(finalAward) && shown.length === 0;
+  return {
+    awards: shown,
+    dropped,
+    newlyIncluded: !dropped && legacyMedal(finalAward),
+  };
 }
 
 function slugPart(value) {
@@ -69,8 +104,7 @@ function from2026(row) {
     region: clean(row.region),
     category: clean(row.category),
     projectType: clean(row.projectType),
-    awards: awardList(row.finalAward, row.specialAwards),
-    dropped: DROPPED_AWARDS.has(medal(row.finalAward)),
+    ...rowInclusion(row.finalAward, awardList(row.finalAward, row.specialAwards)),
   };
 }
 
@@ -87,8 +121,7 @@ function from2025(group, project) {
     region: "",
     category: clean(group.category),
     projectType: "",
-    awards: awardList(project.medal, project.awards),
-    dropped: DROPPED_AWARDS.has(medal(project.medal)),
+    ...rowInclusion(project.medal, awardList(project.medal, project.awards)),
   };
 }
 
@@ -96,19 +129,20 @@ function isBlank(row) {
   return !row.title || row.students.length === 0;
 }
 
-function assignIds(rows) {
+function assignIds(rows, used = new Set()) {
   const ijasCounts = new Map();
   for (const row of rows) {
     if (!row.ijasNumber) continue;
     const key = `${row.year}:${row.ijasNumber}`;
     ijasCounts.set(key, (ijasCounts.get(key) || 0) + 1);
   }
-  const used = new Set();
   return rows.map((row) => {
     let base;
     if (row.ijasNumber) {
       const key = `${row.year}:${row.ijasNumber}`;
-      base = ijasCounts.get(key) === 1 ? `${row.year}-ijas-${row.ijasNumber}` : `${row.year}-ijas-${row.ijasNumber}-${row.projectNumber}`;
+      const numbered = `${row.year}-ijas-${row.ijasNumber}-${row.projectNumber}`;
+      base = ijasCounts.get(key) === 1 ? `${row.year}-ijas-${row.ijasNumber}` : numbered;
+      if (used.has(base) && row.projectNumber) base = numbered;
     } else if (row.projectNumber) {
       base = `${row.year}-project-${row.projectNumber}`;
     } else {
@@ -128,7 +162,7 @@ function assignIds(rows) {
       region: row.region,
       category: row.category,
       projectType: row.projectType,
-      awards: row.awards,
+      awards: visibleAwards(row.awards),
     };
     if (row.awardRecipient) project.awardRecipient = row.awardRecipient;
     return project;
@@ -142,7 +176,15 @@ function withStoredAbstract(project) {
 }
 
 export function finalizeProjectRows(rows) {
-  return assignIds(rows.filter((row) => !row.dropped && !isBlank(row))).map(withStoredAbstract);
+  const kept = rows.filter((row) => !row.dropped && !isBlank(row));
+  const legacy = kept.filter((row) => !row.newlyIncluded);
+  const extra = kept.filter((row) => row.newlyIncluded);
+  const legacyProjects = assignIds(legacy);
+  const extraProjects = assignIds(extra, new Set(legacyProjects.map((project) => project.id)));
+  const byRow = new Map();
+  legacy.forEach((row, index) => byRow.set(row, legacyProjects[index]));
+  extra.forEach((row, index) => byRow.set(row, extraProjects[index]));
+  return kept.map((row) => withStoredAbstract(byRow.get(row)));
 }
 
 const sourceRows = [
@@ -201,8 +243,7 @@ export function projectBlob(project) {
     project.category,
     project.region,
     project.abstract,
-    ...project.awards,
-    ...project.awards.map(displayAward),
+    ...visibleAwards(project.awards),
   ]
     .join("\n")
     .toLowerCase();
@@ -214,7 +255,7 @@ export function matchesProject(project, { query = "", region = "", school = "", 
   if (region && listed(project.region, "Not listed") !== region) return false;
   if (school && listed(project.school, "Not listed") !== school) return false;
   if (category && listed(project.category, "Not listed") !== category) return false;
-  if (award && !project.awards.some((name) => displayAward(name) === award)) return false;
+  if (award && !visibleAwards(project.awards).some((name) => name === award)) return false;
   return true;
 }
 
